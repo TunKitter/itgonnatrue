@@ -1,0 +1,58 @@
+.infors {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    margin-bottom:  3em;    
+}
+.infor {
+display: flex;
+flex-direction: column;
+align-items: center;
+height: 100%;
+justify-content: center ;
+border-radius: 12px;
+box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px, rgba(0, 0, 0, 0.1) 0px 7px 13px -3px, rgba(0, 0, 0, 0.01) 0px -3px 0px inset;
+width: 45%;
+background: #4481eb;
+color: white;
+height: 200px;
+}
+.infor span:first-child {
+    font-size: 3em;
+
+}
+
+#recommend {
+    list-style: none;
+    position: relative;
+    border-left: 1px solid black;
+    padding-left: 10px;
+}
+#recommend li {
+    padding: 1em;
+}
+#recommend li::before  {
+    content: '';
+    width: 20px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    transition-duration: 0.2s;
+    border: 1px solid;
+    position: absolute;
+    left: -12px;
+    padding-top: 10px;
+}
+#recommend li::after  {
+    content: '';
+    z-index: -8;
+    position: absolute;
+    left: -30px;
+    padding-top: 10px;
+    width: 2px;
+    height: 10px;
+}
+#recommend li:hover::before {
+    background: #4481eb;
+    border-color: #4481eb;
+}

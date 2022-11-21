@@ -1,0 +1,24 @@
+#feedback {
+    display: flex;
+    flex-wrap: wrap;
+}
+#inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    flex: 1;
+    font-family: "Varela Round", sans-serif;
+}
+::placeholder {
+    font-family: "Varela Round", sans-serif;
+    color: gray;
+}
+#inputs :is(input,textarea) {
+    padding: 20px 10px;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    font-family: "Varela Round", sans-serif;
+    background: #EAEAEA;
+}
+#inputs button

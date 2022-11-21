@@ -1,0 +1,14 @@
+a {
+    background: -webkit-linear-gradient(#0093E9, #80D0C7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#content {
+    margin-left: -5em;
+    display: flex;
+    justify-content: space-around;
+    gap: 1em;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
