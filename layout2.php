@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="<?= $home_path?>/styles/index.css">
     <link rel="stylesheet" href="<?= $home_path?>/styles/<?= $style ?>.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <title>It's gonna true</title>
+    <title><?= $title ?></title>
     <style> 
     #list:nth-child(<?= $index_list ?>) {
         border-left-color: #4481eb !important ; color: #4481eb;
@@ -18,7 +18,7 @@
 <body>
 
     <nav>
-        <div id="logo">IGT</div>
+        <div id="logo" onclick="location.href = '../home/'">IGT</div>
         <div id="search"><input type="text" placeholder="" spellcheck="false">
             <i class="fa-solid fa-magnifying-glass" style="font-size: 1.4em; color:var(--primary-color)"></i>
         </div>
@@ -39,10 +39,10 @@
                 <li id="list" onclick="location.href = '../analytic/index.php'">Thống kê</li>
                 <li id="list">Khác
                     <ul id="list_item">
-                        <li onclick="location.href = './grammar.html'"># Ngữ pháp</li>
-                        <li onclick="location.href = './feedback.html'"># Feedback</li>
-                        <li onclick="location.href = './contact.html'"># Thông tin liên hệ</li>
-                        <li onclick="location.href = './about.html'"># Về chúng tôi</li>
+                        <li onclick="location.href = '../grammar/index.php'"># Ngữ pháp</li>
+                        <li onclick="location.href = '../feedback/index.php'"># Feedback</li>
+                        <li onclick="location.href = '../contact/index.php'"># Thông tin liên hệ</li>
+                        <li onclick="location.href = '../about/index.php'"># Về chúng tôi</li>
                     </ul>
                 </li>
             </ul>

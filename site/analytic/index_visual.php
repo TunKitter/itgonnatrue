@@ -1,51 +1,7 @@
-<!DOCTYPE html>
-<html lang="vn">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/index.css">
-    <link rel="stylesheet" href="../styles/analytics.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <title>Thống kê</title>
-</head>
-
-<body>
-
-    <nav>
-        <div id="logo">IGT</div>
-        <div id="search"><input type="text" placeholder="" spellcheck="false">
-            <i class="fa-solid fa-magnifying-glass" style="font-size: 1.4em; color:var(--primary-color)"></i>
-        </div>
-        <div id="action">
-            <button onclick="location.href = 'storage.html'"
-                style="background: #4481eb ;color:white; border-radius: 4px">Ôn tập ngay</button>
-            <button>Đăng nhập</button>
-            <!-- <i class="fa-solid fa-user-astronaut" style="font-size: 1.7em ;color:var(--primary-color)"></i> -->
-        </div>
-    </nav>
-    <aside>
-        <div id="category" style="position: sticky ; top: 1em;">
-
-            <ul style="cursor: pointer">
-                <li id="list" style="border-left-color: #4481eb !important ; color: #4481eb;"
-                    onclick="location.href = 'storage.html'">Kho từ vựng</li>
-                <li id="list" onclick="location.href = './training.html'">Ôn tập</li>
-                <li id="list" onclick="location.href = './ranking.html'">Xếp hạng</li>
-                <li id="list" onclick="location.href = './analytics.html'">Thống kê</li>
-                <li id="list">Khác
-                    <ul id="list_item">
-                        <li># Ngữ pháp</li>
-                        <li># Tài liệu học tập</li>
-                        <li># Thông tin liên hệ</li>
-                        <li># Về chúng tôi</li>
-                    </ul>
-                </li>
-            </ul>
-
-        </div>
+    <link rel="stylesheet" href="../../styles/storage.css">
+    
         <div style="margin-left: -4em">
             <div class="infors">
 

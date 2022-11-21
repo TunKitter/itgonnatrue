@@ -1,52 +1,8 @@
-<!DOCTYPE html>
-<html lang="vn">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <title>It's gonna true</title>
     <style> 
     p b {
         color: #4481eb  ;
     }
     </style>
-</head>
-
-<body>
-
-    <nav>
-        <div id="logo">IGT</div>
-        <div id="search"><input type="text" placeholder="" spellcheck="false">
-            <i class="fa-solid fa-magnifying-glass" style="font-size: 1.4em; color:var(--primary-color)"></i>
-        </div>
-        <div id="action">
-            <button onclick="location.href = 'storage.html'"
-                style="background: #4481eb ;color:white; border-radius: 4px">Ôn tập ngay</button>
-            <button>Đăng nhập</button>
-            <!-- <i class="fa-solid fa-user-astronaut" style="font-size: 1.7em ;color:var(--primary-color)"></i> -->
-        </div>
-    </nav>
-    <aside>
-        <div id="category" style="position: sticky ; top: 1em;">
-
-            <ul style="cursor: pointer">
-                <li id="list" style="border-left-color: #4481eb !important ; color: #4481eb;" onclick="location.href = 'storage.html'">Kho từ vựng</li>
-                <li id="list" onclick="location.href = './training.html'">Ôn tập</li>
-                <li id="list" onclick="location.href = './ranking.html'">Xếp hạng</li>
-                <li id="list" onclick="location.href = './analytics.html'">Thống kê</li>
-                <li id="list">Khác
-                    <ul id="list_item">
-                        <li onclick="location.href = './grammar.html'"># Ngữ pháp</li>
-                        <li onclick="location.href = './feedback.html'"># Feedback</li>
-                        <li onclick="location.href = './contact.html'"># Thông tin liên hệ</li>
-                        <li onclick="location.href = './about.html'"># Về chúng tôi</li>
-                    </ul>
-                </li>
-            </ul>
-
-        </div>
         <div style="margin-left: -5em">
             <img  style="display: block; margin: 0 auto" src="https://img.freepik.com/premium-vector/online-uk-english-language-courses-isometric-3d-illustration_88272-2014.jpg?w=826" width="600px" alt="">
             <br><br>
@@ -67,7 +23,7 @@
 <h2>Về nhà phát triển</h2>
 <p style="line-height: 1.8em; font-size: 1.2em;">Website được phát triển bởi <b>Đặng Tuấn Kiệt</b> - sinh viên của trường <span style="color : #f7941d">Cao Đẳng FPT Polytechnic <sup><img width="30px" src="https://caodang.fpt.edu.vn/wp-content/uploads/x18198154_10208600482868814_3469513_n.png.pagespeed.ic_.4_CcyctRxZ.png" alt=""></sup></span> . Website sẽ có xu hướng được tối giản hoá nhằm tối ưu trải nghiệm người dùng, để họ không phải quá khó khăn trong việc tìm kiếm các tính năng và giúp tăng hiệu năng, quá trình tải của trang web. Những tính năng được sử dụng trong website sẽ giúp bạn đẩy mạnh quá trình ghi nhớ tốt hơn và số lượng từ cũng sẽ ngày càng được gia tăng. Thông qua tính năng <b>dự đoán khả năng</b> của bạn ở phần <b>Thống kê</b>, bạn sẽ biết được mình sẽ đạt được bao nhiêu từ trong năm tới , khả năng giao tiếp của bạn sẽ được phát triển thành <b>fluecy</b> trong khoảng bao nhiêu lâu nữa và còn nhiều tính năng khác đang chờ đợi bạn khám phá. </p>
 <br>
-<video src="../styles/tutor.mp4" muted autoplay style="width: 100%"></video>
+<video src="../../styles/tutor.mp4" muted autoplay style="width: 100%"></video>
 <br><br>
 <br>
 <p style="line-height: 1.8em; font-size: 1.2em;">Mong rằng với website này sẽ giúp bạn ngày càng phát triển hơn trong sự nghiệp học ngôn ngữ của mình. Rất có thể website còn khá đơn giản và chưa đáp ứng được những nhu cầu học nâng cao như <b>ngữ pháp</b> hay <b>accent</b>, nhưng mong rằng bạn sẽ feedback cho <b>IGT</b> để ngày càng được phát triển hơn . Xin cảm ơn quý độc giả đã đọc . Xin cảm ơn </p>
