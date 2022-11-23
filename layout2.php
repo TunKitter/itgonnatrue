@@ -25,7 +25,7 @@
         <div id="action">
             <button onclick="location.href = '../training/index.php'"
                 style="background: #4481eb ;color:white; border-radius: 4px">Ôn tập ngay</button>
-            <button>Đăng nhập</button>
+            <button onclick="location.href = '../form/login/'">Đăng nhập</button>
             <!-- <i class="fa-solid fa-user-astronaut" style="font-size: 1.7em ;color:var(--primary-color)"></i> -->
         </div>
     </nav>

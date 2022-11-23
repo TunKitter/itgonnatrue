@@ -3,7 +3,7 @@
                 <div class="rank_item">
                     <div>1</div>
                     <div style="display: flex ; justify-content: space-between ; width: 100%"><p>Đặng Tuấn Kiệt</p> <p>53 145</p></div>
-                    <img  loading="lazy" id="congratulation">
+                    <img  loading="lazy" id="congratulation" >
                     <img src="http://picsum.photos/200" style="border: 2px solid white;width: 80px;border-radius: 50%; top:20px ; left:10px" >
                 </div>
                 <div class="rank_item">
@@ -211,6 +211,6 @@
     </aside>
 <script>
     document.body.onload = function() {
-            document.getElementById('congratulation').setAttribute('src','../styles/happy.gif   ')
+            document.getElementById('congratulation').setAttribute('src','../../styles/happy.gif   ')
     }
 </script>

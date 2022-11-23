@@ -18,7 +18,7 @@
         </div>
         <div id="action">
             <button onclick="location.href = '../storage/index.php'">Kho từ vựng <sup style="background-color: #4481eb; color: white; padding: 4px; border-radius: 10% ">1</sup> </button>
-            <button>Đăng nhập</button>
+            <button onclick="location.href = '../form/login/'">Đăng nhập</button>
             <!-- <i class="fa-solid fa-user-astronaut" style="font-size: 1.7em ;color:var(--primary-color)"></i> -->
         </div>
     </nav>
