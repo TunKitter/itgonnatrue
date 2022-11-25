@@ -3,7 +3,6 @@ $title = 'Chi tiết';
 ?>
 <div id="toast"><div id="img">IGT</div><div id="desc">Thêm thành công</div></div>
      
-    
         <div id="content">
         <div>
 <span>#adj</span>
