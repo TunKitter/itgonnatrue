@@ -1,7 +1,8 @@
 <?php
 require_once('../../config/config.php');
 if(isset($_GET['username']) && isset($_GET['password']) && isset($_GET['name']) && isset($_GET['image']) && isset($_GET['email']) && isset($_GET['admin'])) { 
-    insertData('customers',$_GET['username'],$_GET['password'],$_GET['name'],$_GET['image'],$_GET['email'],$_GET['admin']);
+    insertData('customers',$_GET['username'],$_GET['password'],$_GET['name'],$_GET['image'],$_GET['email'],$_GET['admin'] == "0");
+    getCustomData('UPDATE customers SET admin_customer = 0 WHERE username_customer = "'. $_GET['username'] .'"');
     header('location: '. $_SERVER['PHP_SELF']);
 }
 elseif(isset($_GET['delete_data'])) {
@@ -9,7 +10,14 @@ elseif(isset($_GET['delete_data'])) {
     header('location: '. $_SERVER['PHP_SELF']);
 }
 elseif(isset($_GET['data_edit']) && isset($_GET['col']) && isset($_GET['username'])) {
-    editData('customers',$_GET['col'].'_customer',$_GET['data_edit'],'username_customer',$_GET['username']);
+    editData('customers',$_GET['col'].'_customer',$_GET['data_edit'] ,'username_customer',$_GET['username']);
+    if($_GET['col'] == 'admin' && $_GET['data_edit'] == '0') {
+        getCustomData('UPDATE customers SET admin_customer = 0 WHERE username_customer = "'. $_GET['username'] .'"');
+    }
+        header('location: '. $_SERVER['PHP_SELF']);
+}
+elseif(isset($_GET['delete_datas'])) {
+    getCustomData('DELETE FROM customers WHERE username_customer IN ('. rtrim($_GET['delete_datas'],',') .')');
     header('location: '. $_SERVER['PHP_SELF']);
 }
 $data = getAllData('customers');
@@ -123,7 +131,7 @@ top: -100px;
             for ($i=0; $i < count($data); $i++) { 
                 echo '<tr>';
                 for ($j=0; $j < 6; $j++) { 
-                    echo '<td onfocusout="confirm_edit(this,`'. $data[$i][0] .' `,'. $j . ')" ondblclick="selected_db(this)" onclick="selected(this,'. $i .','. $j .',`'. $column[$j] . '`)">'. $data[$i][$j]  .'</td>'   ;
+                    echo '<td onmousedown="multi_select(event)" onfocusout="confirm_edit(this,`'. $data[$i][0] .' `,'. $j . ')" ondblclick="selected_db(this)" onclick="selected(this,'. $i .','. $j .',`'. $column[$j] . '`)">'. $data[$i][$j]  .'</td>'   ;
                 }
                 echo '</tr>';
             }
@@ -140,6 +148,16 @@ top: -100px;
     var indexed = 0
     var row = 0
     var field = ['username', 'password', 'name', 'image', 'email', 'admin']
+    var is_multi = false;
+    var multi  = new Set()
+    function multi_select(event) {
+        if (event.ctrlKey) {
+            is_multi = true
+        } else {
+    is_multi = false
+
+}
+    }
     add.onclick = function () {
         str = ''
         for (let i = 0; i < add_data.length; i++) {
@@ -182,16 +200,38 @@ top: -100px;
         }
     }
     function selected(obj, o,index, field_2) {
+        
         document.getElementById('trash').style.top =  window.event.clientY + 'px'
         document.getElementById('trash').style.left =  window.event.clientX + 'px'
         let tr  = document.getElementsByTagName('tr')
         tr[o+2].style.transitionDuration = '0.01s'
         tr[o+2].style.background = 'lightslategray'
         tr[o+2].style.color = 'white'
-        tr[indexed].style.background = 'white'
-        tr[indexed].style.color = '#000000B3'
-        if(indexed == o+2) {
-            document.getElementById('trash').style.top =  '-100px'
+        if(!is_multi && multi.size != 0) {
+            let temp = Array.from(multi)
+            document.getElementsByTagName('tr')[o+2].style.background = 'white'
+            document.getElementsByTagName('tr')[o+2].style.color = '#000000B3'
+            for (let i = 0; i < multi.size; i++) {
+                document.getElementsByTagName('tr')[temp[i]].style.background = 'white'
+                document.getElementsByTagName('tr')[temp[i]].style.color = '#000000B3'
+            }
+            multi.clear()
+            tr[indexed].style.background = 'white'
+            tr[indexed].style.color = '#000000B3'
+            if(indexed == o+2) {
+                document.getElementById('trash').style.top =  '-100px'
+            }
+        }
+        else {
+            if(multi.has(o+2)) {
+                tr[o+2].style.background = 'white'
+            tr[o+2].style.color = '#000000B3'
+                multi.delete(o+2)
+            }
+            else {
+
+                multi.add(o+2)
+            }
         }
         indexed = o+2;
         row = o
@@ -211,9 +251,18 @@ top: -100px;
     }
     document.getElementById('trash').onclick = function() {
         launch_toast('Xoá thành công','#E0144C')
-        setTimeout(() => {
-            location.href = '<?= $_SERVER['PHP_SELF']?>?delete_data='+ (document.getElementsByTagName('tr')[row+2].firstChild.innerHTML);
-        }, 2000);
+        if(multi.size == 1) {
+
+setTimeout(() => {
+    location.href = '<?= $_SERVER['PHP_SELF']?>?delete_data='+ (document.getElementsByTagName('tr')[row+2].firstChild.innerHTML);
+}, 2000);
+}
+else {
+setTimeout(() => {
+    location.href = '<?= $_SERVER['PHP_SELF']?>?delete_datas='+ del_data(Array.from(multi));
+}, 2000);
+
+}
     }
     function launch_toast(text,bg = null) {
     var x = document.getElementById("toast")    
@@ -225,5 +274,15 @@ top: -100px;
     }
     x.className = "show";
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+}
+function del_data(text) {
+    let result = ''
+    let dom =  document.getElementsByTagName('tr')
+    for(let i = 0 ; i < text.length ; i++)
+{
+result+= '"' + dom[Array.from(multi)[i]].firstChild.innerText + '",';
+
+}
+return result;
 }
 </script>
