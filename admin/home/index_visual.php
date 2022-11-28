@@ -129,7 +129,6 @@
 
     </aside>
     <script>
-
         rd = Math.random()
         if (rd > 0.7) {
             i = 0

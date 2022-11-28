@@ -143,7 +143,8 @@ gap: 0.6em;
     margin: 10px;
     display: flex;
     flex-wrap: wrap; 
-    flex-direction: column;
+    /* flex-direction: column; */
+    align-items: flex-start;
 }   
 #img_example {
     display: flex;
@@ -167,6 +168,9 @@ gap: 0.6em;
     width: 100px;
     height: 1px;
     background: gray;
+}
+.theory,.example {
+    min-width: 200px;
 }
 #toast {
     visibility: hidden;
@@ -196,7 +200,7 @@ gap: 0.6em;
     
     box-sizing: border-box;    
     background-color: white;
-    color: #4481eb;
+    color: #4481eb
 }
 #toast #desc{
 

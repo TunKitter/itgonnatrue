@@ -21,7 +21,7 @@ body {
     position: absolute;
     bottom: -10;
     border: none;
-    left: 3.5%;
+    left: 5%;
     transition-duration: 0.5s;
     right: 0;
     content: '';

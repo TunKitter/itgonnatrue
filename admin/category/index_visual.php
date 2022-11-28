@@ -1,30 +1,13 @@
-    <style>
-        table  {
-            width: 100%;
-
-        }
-        thead tr th {
-            background:  lightslategray;
-            color: white    ;
-            padding: 10px;
-        }
-        td  {
-            text-align: center;
-            padding: 10px;
-        }
-        img {
-border-radius: 50%;
-width: 50px;
-box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-        }
-    </style>
-<?php
+    <?php
 require_once('../../config/config.php');
-if(isset($_GET['id']) && isset($_GET['name']) && isset($_GET['image'])) { 
-    insertData('category',$_GET['id'],$_GET['name'],$_GET['image']);
+if(isset($_POST['id']) && isset($_POST['name']) && isset($_FILES['img'])) { 
+    $name_file  = $_POST['id']. '.'.  explode('/',$_FILES['img']['type'])[1];
+    move_uploaded_file($_FILES['img']['tmp_name'],'../../src/images/category/'.$name_file );
+    insertData('category',$_POST['id'],$_POST['name'],$name_file);
     header('location: '. $_SERVER['PHP_SELF']);
 }
 elseif(isset($_GET['delete_data'])) {
+    unlink('../../src/images/category/'. getOneData('category','id_category',$_GET['delete_data'])[2]);
     deleteData('category','id_category',$_GET['delete_data']);
     header('location: '. $_SERVER['PHP_SELF']);
 }
@@ -36,6 +19,11 @@ elseif(isset($_GET['delete_datas'])) {
     getCustomData('DELETE FROM category WHERE id_category IN ('. rtrim($_GET['delete_datas'],',') .')');
     header('location: '. $_SERVER['PHP_SELF']);
 }
+elseif(isset($_POST['file_name']) && isset($_FILES['img_change']))
+{
+    move_uploaded_file($_FILES['img_change']['tmp_name'],'../../src/images/category/'. $_POST['file_name']);
+    header('location: '. $_SERVER['PHP_SELF']);
+ }
 $data = getAllData('category');
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
@@ -43,12 +31,19 @@ $data = getAllData('category');
 <link rel="stylesheet" href="../../styles/storage.css">
 <link rel="stylesheet" href="../../styles/detail.css">
 <style>
+    td input {
+        border: none;
+        background: transparent;
+        width: 100px !important ;
+        outline: none;
+    }
     #toast {
         right: initial;
         left: 0;
     }
     table {
         width: 100%;
+        height: 90vh;
     }
 
     thead tr th {
@@ -60,15 +55,15 @@ $data = getAllData('category');
     td {
         text-align: center;
         padding: 10px;
-        max-width: 100px;
+        min-width: 100px;
         white-space: nowrap;
         overflow: auto;
         text-overflow: clip;
     }
 
     img {
-        border-radius: 50%;
-        width: 50px;
+        width: 100px;
+        max-height: 60px;
         box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     }
     tbody tr:first-child {
@@ -81,10 +76,11 @@ $data = getAllData('category');
         border: none;
         width: 50px;
         height: 50px;
-        position: absolute;
+        position: fixed;
         bottom: 2em;
         right: 2em;
         border-radius: 50%;
+        z-index: 100;
         text-align: center;
         font-size: 1.2em;
     }
@@ -118,9 +114,15 @@ top: -100px;
     #trash:hover {
         filter: none;
     }
+#change_image {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+}
 </style>
 <div id="toast"><div id="img">IGT</div><div id="desc">Xoá thành công</div></div>
-<button id="add"> <i class="fa-solid fa-plus"></i> </button>
+<button id="add" form="image_form"> <i class="fa-solid fa-plus"></i> </button>
 <button id="close"> <i class="fa-solid fa-close"></i> </button>
 <table>
     <thead>
@@ -132,17 +134,27 @@ top: -100px;
     </thead>
     <tbody>
         <tr id="add_column">
-            <td class="add_data" contenteditable=""></td>
-            <td class="add_data" contenteditable=""></td>
-            <td class="add_data" contenteditable=""></td>
+            <!-- <td class="add_data" contenteditable=""></td> -->
+            <!-- <td class="add_data" contenteditable=""></td> -->
+            <form method="post" enctype="multipart/form-data">
+                <td> <input type="text" name="id"></td>
+                <td> <input type="text" name="name"></td>
+                <td class="add_data"><input name="img" type="file" ></td>
+            </form>
         </tr>
         <?php
         $column = explode(',',getColumn('category'));
+        
             for ($i=0; $i < count($data); $i++) { 
                 echo '<tr>';
-                for ($j=0; $j < 3; $j++) { 
+                for ($j=0; $j < 2; $j++) { 
                     echo '<td onmousedown="multi_select(event)" onfocusout="confirm_edit(this,`'. $data[$i][0] .' `,'. $j . ')" ondblclick="selected_db(this)" onclick="selected(this,'. $i .','. $j .',`'. $column[$j] . '`)">'. $data[$i][$j]  .'</td>'   ;
                 }
+            echo '<td style="position: relative"> <form method="post" enctype="multipart/form-data" >
+            <input type="hidden" name="file_name" value="'. $data[$i][2] .'" />
+            <input id="change_image" type="file" name="img_change" onchange="document.forms['. $i+1 .'].submit()" />
+            </form> 
+             <img src="../../src/images/category/'. $data[$i][2].'"/></td>';
                 echo '</tr>';
             }
             ?>
@@ -177,14 +189,15 @@ top: -100px;
             change_button()
                 document.getElementById('add_column').style.display = 'table-row'
                 document.getElementById('close').style.visibility = 'visible'
-                add_data[0].focus()
+                document.getElementsByTagName('input')[1].focus()
                 document.getElementById('add_column').getElementsByTagName('td')[0].focus()   
         }
         else if (str.length > 0) {
             // if(!str == 'username=&password=&name=&image=&email=&admin=&') {
+                
                 launch_toast('Thêm thành công','#68B984')
                 setTimeout(() => {
-                location.href = '<?= $_SERVER['PHP_SELF'] ?>?' + str
+                    document.forms[0].submit()
                 }, 2000);
             // }
         }
@@ -211,8 +224,9 @@ top: -100px;
     }
     function selected(obj, o,index, field_2) {
         
-        document.getElementById('trash').style.top =  window.event.clientY + 'px'
+        document.getElementById('trash').style.top =  window.event.pageY + 'px'
         document.getElementById('trash').style.left =  window.event.clientX + 'px'
+        console.log(window.event);
         let tr  = document.getElementsByTagName('tr')
         tr[o+2].style.transitionDuration = '0.01s'
         tr[o+2].style.background = 'lightslategray'
@@ -278,7 +292,7 @@ top: -100px;
     var x = document.getElementById("toast")    
     document.getElementById('desc').innerText = text
     if(bg) {
-        x.style.background =  bg
+        x.style.background = bg
         document.getElementById('img').style.color = bg
 
     }

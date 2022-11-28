@@ -31,9 +31,9 @@ function getColumn($field) {
 
 function getOneData($column,$field,$content) {
     global $connect;
-    $exe = $connect->prepare('SELECT * FROM '. $column . ' WHERE '. $field . ' = ' .  '"'. $content .'"');
+    $exe = $connect->prepare('SELECT * FROM '. $column . ' WHERE '. $field . ' = ' .  '"'. $content .'" LIMIT 1');
             $exe->execute();
-            $exe = $exe->fetchAll()[0];
+            $exe = $exe->fetchAll();
     return $exe;
  }
 function insertData(...$arr) {
