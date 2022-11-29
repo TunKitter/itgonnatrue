@@ -209,7 +209,7 @@ function getDataIndex(index) {
                     echo '<button onclick="add_example()" id="add">+</button><div id="example">';
                     for ($i=0; $i < count($example); $i++) { 
                         echo '<div class="usage">\
-                        <p class="theory">'. $example[$i][0] .'</p>\
+                        <p class="theory" onclick="selected(this,'. $i .')">'. $example[$i][0] .'</p>\
                         <div class="line"></div>\
                         <p class="example">'. $example[$i][1] .'</p>\
                         </div>';
@@ -273,5 +273,16 @@ function add_example() {
         document.getElementById('theory2').innerText
 
     }
+}
+function selected(obj,index) {
+    obj.style.background = '#4481eb'
+    obj.style.borderColor = '#4481eb'
+    obj.style.color = 'white'
+    // document.getElementsByClassName('usage')[index].style.background = 'red'
+    let exa =document.getElementsByClassName('example')[index]
+    exa.style.background = '#4481eb'
+    exa.style.borderColor = '#4481eb'
+    exa.style.color = 'white'
+   
 }
 </script>
