@@ -5,7 +5,7 @@ if(isset($_GET['add_usage'])) {
     $arr = unserialize(base64_decode(getCustomData('SELECT usage_voca FROM vocabulary WHERE id_voca = "'. $_GET['v'] .'"')[0][0]));
     array_push($arr, $_GET['add_usage']);
     editData('vocabulary','usage_voca',base64_encode(serialize($arr)),'id_voca',$_GET['v']);
-    header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']);
+    header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']. '&t=1' );
 }
 elseif(isset($_GET['delete_usage'])) {
     $arr = unserialize(base64_decode(getCustomData('SELECT usage_voca FROM vocabulary WHERE id_voca = "'. $_GET['v'] .'"')[0][0]));
@@ -19,7 +19,7 @@ elseif(isset($_GET['delete_usage'])) {
         $index++;
     }
     editData('vocabulary','usage_voca',base64_encode(serialize($new_arr)),'id_voca',$_GET['v']);
-    header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']);
+    header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']. '&t=1');
     
 }
 elseif(isset($_GET['edit_usage'])) {
@@ -27,13 +27,36 @@ elseif(isset($_GET['edit_usage'])) {
     $arr[$_GET['index']] = $_GET['edit_usage'];
     // var_dump($arr);  
     editData('vocabulary','usage_voca',base64_encode(serialize($arr)),'id_voca',$_GET['v']);
-    header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']);
+    header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']. '&t=1');
 }
 elseif(isset($_GET['add_example'])) {
     $arrr = unserialize(base64_decode($data[0][6]));
     array_push($arrr,array($_GET['add_example'],$_GET['meaning_example']));
     editData('vocabulary','example_voca',base64_encode(serialize($arrr)),'id_voca',$_GET['v']);
-    header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']);
+    header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']. '&t=2');
+}
+elseif(isset($_GET['delete_exam'])) {
+    $arr = unserialize(base64_decode(getCustomData('SELECT example_voca FROM vocabulary WHERE id_voca = "'. $_GET['v'] .'"')[0][0]));
+    $index = 0;
+    $new_arr = array();
+    for ($i=0; $i < count($arr); $i++) { 
+        if($i == $_GET['delete_exam']) {
+            continue;
+        }
+        $new_arr[$index] = $arr[$i];
+        $index++;
+    }
+    editData('vocabulary','example_voca',base64_encode(serialize($new_arr)),'id_voca',$_GET['v']);
+    header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']. '&t=2');
+    
+}
+elseif(isset($_GET['edit_exam'])) {
+    $arr = unserialize(base64_decode(getCustomData('SELECT example_voca FROM vocabulary WHERE id_voca = "'. $_GET['v'] .'"')[0][0]));
+   
+    $arr[$_GET['index']][$_GET['jndex']] = $_GET['edit_exam'];
+    editData('vocabulary','example_voca',base64_encode(serialize($arr)),'id_voca',$_GET['v']);
+    header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']. '&t=2');
+
 }
 
 ?>
@@ -41,6 +64,14 @@ elseif(isset($_GET['add_example'])) {
 <link rel="stylesheet" href="../../styles/detail.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 <style>
+.btn_delete {
+        background: white;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-radius: 2px;
+    }
+    
       #add {
         background: #4481eb;
         color: white;
@@ -66,6 +97,7 @@ color: rgb(44, 188, 99);
 }
 li p {
     outline: none;
+    text-overflow: ellipsis;
 }
     table {
         width: 100%;
@@ -86,7 +118,7 @@ li p {
         text-overflow: clip;
     }
 
-       td:hover {
+       td:not(:nth-child(3)):hover {
         background: lightslategray;
         transition-duration: 0.01s;
         color: white;
@@ -173,6 +205,7 @@ width: 80%;
 var check = true
 var index = 0
 li = document.querySelectorAll('#control li')
+
 content_default = document.getElementById('content').outerHTML
 for (let i = 0; i < li.length; i++) {
     li[i].onclick = function () {
@@ -207,18 +240,16 @@ function getDataIndex(index) {
         case 2 : {
             return '<?php   $example = unserialize(base64_decode($data[0][6]));
                     echo '<button onclick="add_example()" id="add">+</button><div id="example">';
+                    echo '<table><thead><tr><th>Cách dùng</th><th>Ví dụ</th><th>Xoá</th></tr></thead><tbody><tr id="add_example_form" style="display:none"><td id="theory"></td><td id="theory2"></td></tr>';
                     for ($i=0; $i < count($example); $i++) { 
-                        echo '<div class="usage">\
-                        <p class="theory" onclick="selected(this,'. $i .')">'. $example[$i][0] .'</p>\
-                        <div class="line"></div>\
-                        <p class="example">'. $example[$i][1] .'</p>\
-                        </div>';
+                        echo '<tr>';
+                        echo '<td ondblclick="this.setAttribute(`contenteditable`,`true`);this.focus()" onfocusout="confirm_exam(this,'. $i.',0)">'. $example[$i][0] .'</td>';
+                        echo '<td ondblclick="this.setAttribute(`contenteditable`,`true`);this.focus()" onfocusout="confirm_exam(this,'. $i.',1)">'. $example[$i][1] .'</td>';
+                        echo '<td><button class="btn_delete" onclick="location.href=`'. $_SERVER['PHP_SELF'] .'?v='. $_GET['v'] .'&delete_exam='.$i .'`">Xoá</button></td>';
+                        echo '</tr>';
                     }
-                    echo '<div class="usage" id="add_example_form" style="display:none">\
-                        <p class="theory" id="theory"></p>\
-                        <div class="line"></div>\
-                        <p class="example" id="theory2"></p>\
-                        </div></div>';              ?>';
+                    echo '</tbody></table>';
+                                     ?>';
             break;
         }
     }
@@ -259,8 +290,7 @@ function confirm_usage(obj,index) {
 var is_confirm = false
 function add_example() {
     if(!is_confirm) {
-
-        document.getElementById('add_example_form').style.display = 'flex'
+        document.getElementById('add_example_form').style.display = 'table-row'
         document.getElementById('theory').setAttribute('contenteditable','true')
         document.getElementById('theory2').setAttribute('contenteditable','true')
         document.getElementById('theory').focus()
@@ -283,6 +313,17 @@ function selected(obj,index) {
     exa.style.background = '#4481eb'
     exa.style.borderColor = '#4481eb'
     exa.style.color = 'white'
-   
+    
+}
+function confirm_exam(obj,index,jndex) {
+    if(confirm('Xác nhận lưu ? ')) {
+        location.href  = '<?= $_SERVER['PHP_SELF']?>?v=<?=$_GET['v'] ?>&edit_exam='+obj.innerText + '&index='+index + '&jndex=' + jndex
+    }
 }
 </script>
+<?php
+if(isset($_GET['t'])) {
+    echo '<script>li['. $_GET['t'] .'].click()</script>';
+
+}
+?>
