@@ -1,8 +1,9 @@
 <?php
 require_once('../../config/config.php');
-if(isset($_GET['username']) && isset($_GET['password']) && isset($_GET['name']) && isset($_GET['image']) && isset($_GET['email']) && isset($_GET['admin'])) { 
-    insertData('customers',$_GET['username'],$_GET['password'],$_GET['name'],$_GET['image'],$_GET['email'],$_GET['admin'] == "0");
-    getCustomData('UPDATE customers SET admin_customer = 0 WHERE username_customer = "'. $_GET['username'] .'"');
+if(isset($_POST['username'])) { 
+    $file_name =$_POST['username'].'.' . explode('/',$_FILES['image']['type'])[1];
+    move_uploaded_file($_FILES['image']['tmp_name'],'../../src/images/customers/'. $file_name);
+    insertData('customers',$_POST['username'],$_POST['password'],$_POST['name'],$file_name,$_POST['email'],$_POST['admin']);
     header('location: '. $_SERVER['PHP_SELF']);
 }
 elseif(isset($_GET['delete_data'])) {
@@ -20,6 +21,13 @@ elseif(isset($_GET['delete_datas'])) {
     getCustomData('DELETE FROM customers WHERE username_customer IN ('. rtrim($_GET['delete_datas'],',') .')');
     header('location: '. $_SERVER['PHP_SELF']);
 }
+elseif(isset($_POST['username_img']))
+ { 
+    $name_file = $_POST['username_img'].'.' . explode('/',$_FILES['img_change']['type'])[1];
+    move_uploaded_file($_FILES['img_change']['tmp_name'],'../../src/images/customers/'. $name_file);
+    editData('customers','image_customer',$name_file,'username_customer',$_POST['username_img']);
+    header('location: '. $_SERVER['PHP_SELF']);
+ }
 $data = getAllData('customers');
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
@@ -50,9 +58,10 @@ $data = getAllData('customers');
         text-overflow: clip;
     }
 
-    img {
+    table img {
         border-radius: 50%;
         width: 50px;
+        height: 50px;
         box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     }
     tbody tr:first-child {
@@ -88,7 +97,7 @@ $data = getAllData('customers');
         outline: none;
     }
 
-    td:hover {
+    td:not(:last-child):hover {
         background: lightslategray;
         transition-duration: 0.01s;
         color: white;
@@ -102,10 +111,23 @@ top: -100px;
     #trash:hover {
         filter: none;
     }
+.is_admin {
+    width: 20px;
+    background-color: #E0144C;
+    margin: 0 auto;
+    transition-duration: 0.3s;
+    border-radius: 3px;
+    height: 20px;
+}
+.checked {
+    background-color: #2cbc63;
+}
 </style>
 <div id="toast"><div id="img">IGT</div><div id="desc">Xoá thành công</div></div>
 <button id="add"> <i class="fa-solid fa-plus"></i> </button>
 <button id="close"> <i class="fa-solid fa-close"></i> </button>
+<form method="POST" id="img_form" enctype= "multipart/form-data">  
+</form>
 <table>
     <thead>
         <tr>
@@ -122,17 +144,39 @@ top: -100px;
             <td class="add_data" contenteditable=""></td>
             <td class="add_data" contenteditable=""></td>
             <td class="add_data" contenteditable=""></td>
+            <td class="add_data">
+                <form method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="username"/>
+                    <input type="hidden" name="password"/>
+                    <input type="hidden" name="name"/>
+                    <input type="file" name="image"/>
+                    <input type="hidden" name="email"/>
+                    <input type="hidden" name="admin"/>
+                </form>
+            </td>
             <td class="add_data" contenteditable=""></td>
-            <td class="add_data" contenteditable=""></td>
-            <td class="add_data" contenteditable=""></td>
+            <td style="" class="add_data" contenteditable=""></td>
         </tr>
         <?php
+        
         $column = explode(',',getColumn('customers'));
             for ($i=0; $i < count($data); $i++) { 
                 echo '<tr>';
-                for ($j=0; $j < 6; $j++) { 
-                    echo '<td onmousedown="multi_select(event)" onfocusout="confirm_edit(this,`'. $data[$i][0] .' `,'. $j . ')" ondblclick="selected_db(this)" onclick="selected(this,'. $i .','. $j .',`'. $column[$j] . '`)">'. $data[$i][$j]  .'</td>'   ;
+                for ($j=0; $j < 5; $j++) { 
+                    if(    $j == 3) {
+                    echo '<td onclick="change_img('. $i .')"> <input type="hidden" name="username_img" value="'. $data[$i][0] .'" /> <input type="file" style="display:none" class="img_input" name="img_change" onchange="confirm_img(`'. $data[$i][0] .'`,'. $i .')"/> <img src="../../src/images/customers/'. $data[$i][3] .'"/></td>';
+                    }
+                    else {
+
+                        echo '<td onmousedown="multi_select(event)" onfocusout="confirm_edit(this,`'. $data[$i][0] .' `,'. $j . ')" ondblclick="selected_db(this)" onclick="selected(this,'. $i .','. $j .',`'. $column[$j] . '`)">'. $data[$i][$j]  .'</td>'   ;
+                    }
+                    }
+                $check_admin = '';
+                if($data[$i][5] == '1') {
+                    $check_admin = 'checked';
                 }
+                 echo '<td><div onclick="change_admin(this,`'. $data[$i][0] .'`)" class="is_admin '. $check_admin .'"></div></td>'   ;
+                
                 echo '</tr>';
             }
             ?>
@@ -150,6 +194,7 @@ top: -100px;
     var field = ['username', 'password', 'name', 'image', 'email', 'admin']
     var is_multi = false;
     var multi  = new Set()
+    var is_submit = false
     function multi_select(event) {
         if (event.ctrlKey) {
             is_multi = true
@@ -159,29 +204,38 @@ top: -100px;
 }
     }
     add.onclick = function () {
-        str = ''
-        for (let i = 0; i < add_data.length; i++) {
-                str += field[i] + '=' + add_data[i].innerHTML + '&'
-        }
+        // str = ''
+        // for (let i = 0; i < add_data.length; i++) {
+        //         str += field[i] + '=' + add_data[i].innerHTML + '&'
+                
+        // }
         if(!isConfirm) {
             change_button()
                 document.getElementById('add_column').style.display = 'table-row'
                 document.getElementById('close').style.visibility = 'visible'
                 add_data[0].focus()
                 document.getElementById('add_column').getElementsByTagName('td')[0].focus()   
+                is_submit = true
         }
-        else if (str.length > 0) {
+        else if (is_submit) {
+            for(let i = 0 ; i < field.length ; i++) {
+                if(i != 3) {
+
+                    document.getElementsByName(field[i])[0].value = add_data[i].innerHTML
+                }
+            }
             // if(!str == 'username=&password=&name=&image=&email=&admin=&') {
                 launch_toast('Thêm thành công','#68B984')
                 setTimeout(() => {
-                location.href = '<?= $_SERVER['PHP_SELF'] ?>?' + str
+                    document.forms[1].submit()
                 }, 2000);
-            // }
-        }
+            }
+        // }
     }
     document.getElementById('close').onclick = function () {
         document.getElementById('add_column').style.display = 'none'
         document.getElementById('close').style.visibility = 'hidden'
+        is_submit = false
         for (let i = 0; i < add_data.length; i++) {
             add_data[i].innerHTML = ''
         }
@@ -285,4 +339,20 @@ result+= '"' + dom[Array.from(multi)[i]].firstChild.innerText + '",';
 }
 return result;
 }
+function change_admin(obj,id)
+ {
+     let check = (obj.classList.toggle('checked') ? '1' : '0')
+launch_toast('Cập nhật thành công',"#68b894")
+setTimeout(() => {
+    location.href = '<?= $_SERVER['PHP_SELF'] ?>?data_edit=' + check + '&col=admin&username='+id
+}, 2000);
+ }
+ function change_img(obj) {
+    document.getElementsByClassName('img_input')[obj].click()
+ }
+ function confirm_img(id,index) {
+    document.getElementsByClassName('img_input')[index].setAttribute('form','img_form')
+    document.getElementsByName('username_img')[index].setAttribute('form','img_form')
+    document.forms[0].submit()
+ }
 </script>

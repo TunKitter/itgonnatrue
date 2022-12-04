@@ -6,6 +6,18 @@
     <link rel="stylesheet" href="<?=$home_path?>/styles/index.css">
     <link rel="stylesheet" href="<?=$home_path?>/styles/<?= $style ?>.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <style>
+        #personal {
+            display: flex;
+            align-items:center;
+             gap:1em;
+              border:1px solid;
+              color: lightslategray;
+               padding: 10px ;
+               border-radius: 7px;
+               box-sizing: border-box;
+        }
+    </style>
     <title><?= $title ?></title>
 </head>
 
@@ -17,8 +29,25 @@
             <i class="fa-solid fa-magnifying-glass" style="font-size: 1.4em; color:var(--primary-color)"></i>
         </div>
         <div id="action">
-            <button onclick="location.href = '../storage/index.php'">Kho từ vựng <sup style="background-color: #4481eb; color: white; padding: 4px; border-radius: 10% ">1</sup> </button>
-            <button onclick="location.href = '../form/login/'">Đăng nhập</button>
+            <button style="visibility: <?= isset($_COOKIE['account'] ) ? 'visible' : 'hidden' ?>" onclick="location.href = '../storage/index.php'">Kho từ vựng <sup style="background-color: #4481eb; color: white; padding: 4px; border-radius: 10% ">1</sup> </button>
+            <?php
+require_once('../../config/config.php');    
+
+            if(isset($_COOKIE['account'])) {
+                $check = getOneData('customers','username_customer',$_COOKIE['username'])[0];
+                if( base64_encode(serialize($check)) == $_COOKIE['account']) {
+
+                    echo '<div onclick="location.href = `../../admin/home/`" id="personal">'. $_COOKIE['username'] . '<img src="../../src/images/customers/'. $check[3] .'" style="width: 35px;height: 35px;border-radius: 50%;"></div>';
+                }
+                else {
+                    die('<script>alert("Phát hiện việc chỉnh sửa cookie");document.body.innerHTML= "<img src=\"https://cdn.dribbble.com/users/272763/screenshots/4576659/astronaut-600x800.gif\" style=\" display:block; margin : 0 auto \"  />"</script>');
+                }
+            }
+            else {
+                echo '<button onclick="location.href = `../form/login/`">Đăng nhập</button>';
+            }
+            ?>
+        </div>
             <!-- <i class="fa-solid fa-user-astronaut" style="font-size: 1.7em ;color:var(--primary-color)"></i> -->
         </div>
     </nav>

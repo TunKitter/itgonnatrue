@@ -171,10 +171,12 @@ $data = getCustomData('SELECT id_voca,name_voca,meaning_voca,category_voca,click
                         
                         echo'</select></td>';                                    ;
                     }
+                
                     elseif($j == 4) {
                         echo '<td>'. $data[$i][$j]  .'</td>'   ;
-                    
+                        
                     }
+                    
                     else {
 
                         echo '<td onmousedown="multi_select(event)" onfocusout="confirm_edit(this,`'. $data[$i][0] .' `,'. $j . ')" ondblclick="selected_db(this)" onclick="selected(this,'. $i .','. $j .',`'. $column[$j] . '`)">'. $data[$i][$j]  .'</td>'   ;
@@ -207,25 +209,7 @@ $data = getCustomData('SELECT id_voca,name_voca,meaning_voca,category_voca,click
         }
     }
     add.onclick = function () {
-        str = ''
-        for (let i = 0; i < add_data.length; i++) {
-            str += field[i] + '=' + add_data[i].innerHTML + '&'
-        }
-        if (!isConfirm) {
-            change_button()
-            document.getElementById('add_column').style.display = 'table-row'
-            document.getElementById('close').style.visibility = 'visible'
-            add_data[0].focus()
-            document.getElementById('add_column').getElementsByTagName('td')[0].focus()
-        }
-        else if (str.length > 0) {
-            // if(!str == 'username=&password=&name=&image=&email=&admin=&') {
-            launch_toast('Thêm thành công', '#68B984')
-            setTimeout(() => {
-                location.href = '<?= $_SERVER['PHP_SELF'] ?>?' + str
-            }, 2000);
-            // }
-        }
+        location.href = '<?=$_SERVER['PHP_SELF'] ?>?create=1'
     }
     document.getElementById('close').onclick = function () {
         document.getElementById('add_column').style.display = 'none'

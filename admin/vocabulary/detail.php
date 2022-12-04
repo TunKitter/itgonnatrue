@@ -52,8 +52,9 @@ elseif(isset($_GET['delete_exam'])) {
 }
 elseif(isset($_GET['edit_exam'])) {
     $arr = unserialize(base64_decode(getCustomData('SELECT example_voca FROM vocabulary WHERE id_voca = "'. $_GET['v'] .'"')[0][0]));
-   
+
     $arr[$_GET['index']][$_GET['jndex']] = $_GET['edit_exam'];
+    var_dump($arr);
     editData('vocabulary','example_voca',base64_encode(serialize($arr)),'id_voca',$_GET['v']);
     header('location:'. $_SERVER['PHP_SELF'] . '?v='. $_GET['v']. '&t=2');
 
@@ -118,12 +119,11 @@ li p {
         text-overflow: clip;
     }
 
-       td:not(:nth-child(3)):hover {
+       td:hover {
         background: lightslategray;
         transition-duration: 0.01s;
         color: white;
     }
-
     select {
         border: none;
         padding: 10px;

@@ -229,6 +229,9 @@ padding: 10px;
 }
 .meaning {
     text-align: center;
+    margin-top: 10px;
+    color: #4481eb;
+    font-size: 1.3em;
 }
 
 .interaction {

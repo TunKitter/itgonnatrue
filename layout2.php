@@ -12,6 +12,17 @@
     #list:nth-child(<?= $index_list ?>) {
         border-left-color: #4481eb !important ; color: #4481eb;
     }
+        #personal {
+            display: flex;
+            align-items:center;
+             gap:1em;
+              border:1px solid;
+              color: lightslategray;
+               padding: 10px ;
+               border-radius: 7px;
+               box-sizing: border-box;
+        }
+        
 </style>
 </head>
 
@@ -23,9 +34,16 @@
             <i class="fa-solid fa-magnifying-glass" style="font-size: 1.4em; color:var(--primary-color)"></i>
         </div>
         <div id="action">
-            <button onclick="location.href = '../training/index.php'"
-                style="background: #4481eb ;color:white; border-radius: 4px">Ôn tập ngay</button>
-            <button onclick="location.href = '../form/login/'">Đăng nhập</button>
+            
+        <img src="https://media.istockphoto.com/id/1357548429/vector/winner-medal-with-star-and-ribbon-3d-vector-icon-cartoon-minimal-style-premium-quality.jpg?s=612x612&w=0&k=20&c=hOII9S8YXRpnlGlEi7ig_Jnrctjk5FehXr99-F0w8dU=" id="banner" style="box-shadow: none" width="70px">
+            <!-- <button onclick="location.href = '../training/index.php'"
+                style="background: #FED049 ;border:none;color:white; border-radius: 4px">Premium</button> -->
+            <?php
+require_once('../../config/config.php');    
+
+                $check = getOneData('customers','username_customer',$_COOKIE['username'])[0];
+            echo '<div onclick="location.href = `../../admin/home/`" id="personal">'. $_COOKIE['username'] . '<img src="../../src/images/customers/'. $check[3] .'" style="width: 35px;height: 35px;border-radius: 50%;"></div>';   
+            ?>
             <!-- <i class="fa-solid fa-user-astronaut" style="font-size: 1.7em ;color:var(--primary-color)"></i> -->
         </div>
     </nav>

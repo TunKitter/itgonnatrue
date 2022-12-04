@@ -1,3 +1,23 @@
+<style>
+    body {
+        overflow: auto !important;
+    }
+</style>
+<?php
+require_once('../../config/config.php');
+$data = getCustomData('SELECT voca_mg,level_mg FROM vocabulary_manager WHERE customer_mg = "'. unserialize( base64_decode( $_COOKIE['account']))[0] .'"');
+$words = array(array(),array(),array(),array(),array(),array());
+for ($i=0; $i < count($data); $i++) { 
+    $words[$data[$i][1]][count($words[$data[$i][1]])] = $data[$i][0];
+}
+$index_count = 0;
+
+// var_dump($words[0]);
+// echo '<br>';
+// var_dump($words[1]);
+// echo '<br>';
+// var_dump($words[2 ]);
+?>
         <div>
             <div id="controls">
                 <ul id="control">
@@ -11,18 +31,7 @@
                 <hr>
             </div>
             <div id="content">
-                <ul>
-                    <li>Hello</li>
-                    <li>Abstract</li>
-                    <li>Trial</li>
-                    <li>Hacker</li>
-                    <li>Something</li>
-                    <li>Angular</li>
-                    <li>Headshort</li>
-                    <li>Training</li>
-                    <li>Guitar</li>
-                    <li>Name</li>
-                </ul>
+
             </div>
 
         </div>
@@ -48,6 +57,7 @@
         }
         var check = true
         var index = 0
+        var voca = ['','','','','','']
         li = document.querySelectorAll('#control li')
         for (let i = 0; i < li.length; i++) {
             li[i].onclick = function () {
@@ -58,18 +68,26 @@
                 document.getElementById('content').style.opacity = 0
 
                 setTimeout(() => {
-                    document.getElementById('content').innerHTML = '<ul>\
-                        <li>Demo 1</li>\
-                        <li>Demo 2</li>\
-                        <li>Demo 3</li>\
-                        <li>Demo 6</li>\
-                        <li>Demo 7</li>\
-                        <li>Demo 8</li>\
-                        <li>Demo 9</li>\
-                        <li>Demo 10</li>\
-                    </ul>'
+                    document.getElementById('content').innerHTML = voca[i]
                     document.getElementById('content').style.opacity = 1
                 }, 300);
             }
         }
+       
+        
     </script>
+    <?php
+    echo '<script>';
+    for ($i = 0; $i < 6; $i++) {
+        $temp = '';
+        for ($j=0; $j < count($words[$i]) ; $j++) { 
+            $temp .= '<li>'.  getOneData('vocabulary','id_voca', $words[$i][$j])[0][1] .'</li>';
+        };
+        echo 'eval("voca['.$i .'] = `<ul>'.$temp. '</ul>` ");';
+    }   
+    echo '</script>';
+    ?>
+    <script>
+        document.getElementById('content').innerHTML = voca[0]
+    </script>
+    

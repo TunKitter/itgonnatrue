@@ -61,10 +61,12 @@ $data = getAllData('category');
         text-overflow: clip;
     }
 
-    img {
-        width: 100px;
-        max-height: 60px;
-        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    table img {
+        width: 60px;
+        height: 60px;
+        transform: scale(2);
+        
+           /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
     }
     tbody tr:first-child {
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -154,7 +156,7 @@ top: -100px;
             <input type="hidden" name="file_name" value="'. $data[$i][2] .'" />
             <input id="change_image" type="file" name="img_change" onchange="document.forms['. $i+1 .'].submit()" />
             </form> 
-             <img src="../../src/images/category/'. $data[$i][2].'"/></td>';
+             <img onclick="document.getElementsByName(`img_change`)['. $i .'].click()" src="../../src/images/category/'. $data[$i][2].'"/></td>';
                 echo '</tr>';
             }
             ?>

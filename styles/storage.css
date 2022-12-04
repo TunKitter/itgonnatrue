@@ -42,7 +42,7 @@ gap: 2em;
 flex-wrap: wrap;
 padding: 1em;
 }
-#content ul li 
+#content > ul li 
 {
     min-width: 100px;
     text-align: center;
