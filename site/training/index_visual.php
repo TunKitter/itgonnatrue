@@ -1,5 +1,5 @@
 <?php
-$data = (getCustomData('SELECT voca_mg,level_mg FROM vocabulary_manager WHERE level_mg = "'. getCustomData('SELECT MIN(level_mg) FROM vocabulary_manager WHERE customer_mg = "'. unserialize(base64_decode($_COOKIE['account']))[0]  .'" ')[0][0]   .'"'));
+$data = (getCustomData('SELECT voca_mg,level_mg FROM vocabulary_manager WHERE level_mg = "'. getCustomData('SELECT MIN(level_mg) FROM vocabulary_manager WHERE customer_mg = "'. $_COOKIE['username']   .'" ')[0][0]   .'" AND customer_mg = "' .  $_COOKIE['username']  .'"'));
 if(isset($_GET['trained'])) {
   $arrrr =  (explode('_',rtrim($_GET['trained'],'_')));
   for ($i=0; $i < count($data); $i++) { 
@@ -15,6 +15,7 @@ if(isset($_GET['trained'])) {
 
     }
   }
+  header('location: ' . $_SERVER['PHP_SELF']);
 }
 ?>
 <style>
@@ -121,16 +122,14 @@ if(isset($_GET['trained'])) {
             document.getElementsByClassName('section')[0].style.display = 'none'
         }, 1000);
         setTimeout(() => {
-            document.getElementsByTagName('div')[5].innerHTML = getLayout(Math.random() > 0.5 ? 1 : 0)
             count++;
+            document.getElementsByTagName('div')[5].innerHTML = getLayout(Math.random() > 0.5 ? 1 : 0)
 
         }, 1100);
     }
     function getLayout(key) {
-        key = 0
         if (total_count == count) {
             key = 2
-
         }
         switch (key) {
             case 0: {
@@ -160,7 +159,7 @@ if(isset($_GET['trained'])) {
                 return ' <div class="section">\
                     <br><br>\
 <div class="question">\
-                    <p>Hello</p>\
+                    <p>'+  arr[count] +'</p>\
                 </div>\
                 <br><br>\
                 <div class="answer">\
@@ -179,8 +178,8 @@ if(isset($_GET['trained'])) {
     <p>1%</p>\
 </div>\
 <br>\
-<p class="res_text">Bạn đã ôn được <span id="cr_w" style="color: #4481eb; font-weight: bold">10</span> từ</p>\
-<p class="res_text">Số từ cần ôn lại : <span id="wr_w" style="color: #e0144c; font-weight: bold">3</span></p>\
+<p class="res_text">Bạn đã ôn được <span id="cr_w" style="color: white; font-weight: bold">10</span> từ</p>\
+<p class="res_text">Số từ cần ôn lại : <span id="wr_w" style="color: white; font-weight: bold">3</span></p>\
 <button class="btn5 btn5-hover" onclick="save_progess()">Tiếp tục</butoon>\
 </div>'
             }
@@ -190,23 +189,21 @@ if(isset($_GET['trained'])) {
     function start_training() {
 
         document.getElementsByTagName('div')[5].innerHTML = getLayout(Math.random() > 0.5 ? 1 : 0)
-        count++;
 
     }
     function check_typing(obj) {
-        if (obj.value == 'Xin chao') {
+        if (obj.value == arr[count]) {
+            result.push(1)
             document.getElementsByClassName('question')[0].style.background = '#2cbc63'
+            count++
             audio.play()
             setTimeout(() => {
-
                 document.getElementsByTagName('div')[5].innerHTML = getLayout(0)
-                count++;
             }, 1100);
         }
     }
     function incorrect(obj) {
         result.push(0)
-
         obj.style.background = '#E0144C'
         obj.style.color = 'white'
         wrong.play()
@@ -215,9 +212,8 @@ if(isset($_GET['trained'])) {
             document.getElementsByClassName('section')[0].style.display = 'none'
         }, 1000);
         setTimeout(() => {
-            document.getElementsByTagName('div')[5].innerHTML = getLayout(Math.random() > 0.5 ? 1 : 0)
             count++;
-
+            document.getElementsByTagName('div')[5].innerHTML = getLayout(Math.random() > 0.5 ? 1 : 0)
         }, 1100);
     }
     function finish() {
@@ -241,8 +237,10 @@ count_true++
             if (i > (3.6 * (100/result.length))*count_true) {
                 value_circle.innerText = cr + '%'
                 document.getElementById('cr_w').innerText = count_true
+                document.getElementById('cr_w').style.color = '#4481eb'
                 document.getElementById('wr_w').innerText = result.length - count_true
-                clearInterval(aa)
+                document.getElementById('wr_w').style.color = '#e0144c'
+                                clearInterval(aa)
             }
         }, 10);
     }

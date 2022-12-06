@@ -3,7 +3,7 @@ require_once('../../config/config.php');
 if(isset($_POST['username'])) { 
     $file_name =$_POST['username'].'.' . explode('/',$_FILES['image']['type'])[1];
     move_uploaded_file($_FILES['image']['tmp_name'],'../../src/images/customers/'. $file_name);
-    insertData('customers',$_POST['username'],$_POST['password'],$_POST['name'],$file_name,$_POST['email'],$_POST['admin']);
+    insertData('customers',$_POST['username'],$_POST['password'],$_POST['name'],$file_name,$_POST['email'],$_POST['admin'] );
     header('location: '. $_SERVER['PHP_SELF']);
 }
 elseif(isset($_GET['delete_data'])) {

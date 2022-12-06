@@ -1,21 +1,28 @@
+<?php
+require_once('../../config/config.php');
+// $data = getCustomData('SELECT name_customer,image_customer,count(voca_mg) FROM customers INNER JOIN vocabulary_manager ON vocabulary_manager.customer_mg = customers.username_customer GROUP BY customer_mg ORDER BY count(voca_mg) DESC ');
+$data = getCustomData('SELECT name_customer,image_customer,count(voca_mg) FROM customers INNER JOIN vocabulary_manager ON vocabulary_manager.customer_mg = customers.username_customer GROUP BY customer_mg ORDER BY count(voca_mg) DESC ');
+$lv5 = getCustomData('SELECT count(voca_mg) FROM vocabulary_manager WHERE level_mg = 5  GROUP BY customer_mg ORDER BY count(voca_mg) DESC');
+
+?>
         <div>
             <div id="rank_visual">
                 <div class="rank_item">
                     <div>1</div>
-                    <div style="display: flex ; justify-content: space-between ; width: 100%"><p>Đặng Tuấn Kiệt</p> <p>53 145</p></div>
+                    <div style="display: flex ; justify-content: space-between ; width: 100%"><p><?= $data[0][0] ?></p> <p><?= count($lv5) <= 0  ? 0 : $lv5[0][0] ?> <?= $data[0][2] ?></p></div>
                     <img  loading="lazy" id="congratulation" >
-                    <img src="http://picsum.photos/200" style="border: 2px solid white;width: 80px;border-radius: 50%; top:20px ; left:10px" >
+                    <img src="../../src/images/customers/<?= $data[0][1] ?>" style="border: 2px solid white;height: 80px;width: 80px;border-radius: 50%; top:20px ; left:10px" >
                 </div>
                 <div class="rank_item">
                     <div style="">3</div>
-                    <img src="http://picsum.photos/200" style="border: 2px solid white;width: 80px;border-radius: 50%; top:-10px ; left:-1em" >
-                    <div style="display: flex ; justify-content: space-between ; width: 100%"><p>Lê Văn Toàn</p>  <p>12 123</p></div>
+                    <img src="../../src/images/customers/<?= $data[2][1] ?>" style="border: 2px solid white;height: 80px;width: 80px;border-radius: 50%; top:-10px ; left:-1em" >
+                    <div style="display: flex ; justify-content: space-between ; width: 100%"><p><?= $data[2][0] ?></p>  <p><?= count($lv5) <= 2  ? 0 : $lv5[2][0] ?> <?= $data[2][2] ?></p></div>
 
                 </div>
                 <div class="rank_item">
                     <div>2</div>
-                    <div style="display: flex ; justify-content: space-between ; width: 100%"><p>Lê Văn Hào</p> <p>43 105</p></div>
-                    <img src="http://picsum.photos/200" style="border: 2px solid white;width: 80px;border-radius: 50%; top:20px ; left:10px" >
+                    <div style="display: flex ; justify-content: space-between ; width: 100%"><p><?= $data[1][0] ?></p> <p><p><?= count($lv5) <= 1  ? 0 : $lv5[1][0] ?> <?= $data[1][2] ?></p></div>
+                    <img src="../../src/images/customers/<?= $data[1][1] ?>" style="border: 2px solid white;height:80px;width: 80px;border-radius: 50%; top:20px ; left:10px" >
 
                 </div>
             </div>
