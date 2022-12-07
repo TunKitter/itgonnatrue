@@ -2,6 +2,31 @@
 $title = 'Chi tiết';
 require_once('../../config/config.php');
 $data =  getOneData('vocabulary','id_voca',$_GET['w'])[0];
+$is_save = false;
+if(isset($_GET['view'])) {
+    editData('vocabulary','click_voca',getOneData('vocabulary','id_voca',$_GET['w'])[0][6]+ 1 ,'id_voca' , $_GET['w']);
+    header('location:' . $_SERVER['PHP_SELF'] . '?w='. $_GET['w']);
+}
+if(isset($_COOKIE['username'])) {
+    $is_save = getCustomData('SELECT voca_mg FROM vocabulary_manager WHERE voca_mg = "'. $_GET['w'] .'" AND customer_mg = "'. $_COOKIE['username']   .'"');
+    $is_premium = getCustomData('SELECT admin_customer FROM customers WHERE username_customer = "'. $_COOKIE['username']  .'"')[0][0];
+    if(isset($_GET['add']))
+    {
+        if(!$is_save ) {
+            insertData('vocabulary_manager',$_COOKIE['username'],$_GET['w'],0,'Nothing here' );
+            header('location:' . $_SERVER['PHP_SELF'] . '?w='. $_GET['w']);
+        }
+        else {
+            if($is_premium) {
+                global $connect;
+                $execute = $connect->prepare('DELETE FROM vocabulary_manager WHERE voca_mg = "'. $_GET['w'] .'" AND customer_mg = "'. $_COOKIE['username'] .'"');
+                $execute->execute();
+                header('location:' . $_SERVER['PHP_SELF'] . '?w='. $_GET['w']);
+            }
+        }
+ }
+    }
+
 ?>
 <style>
     ol li {
@@ -12,15 +37,16 @@ $data =  getOneData('vocabulary','id_voca',$_GET['w'])[0];
     }
 </style>
 <link rel="stylesheet" href="../../styles/storage.css">
-<div id="toast"><div id="img">IGT</div><div id="desc">Thêm thành công</div></div>
+<div id="toast"><div id="img">IGT</div><div id="desc">Thành công</div></div>
      
         <div id="content">
         <div>
 <span>#<?=explode('_',($data[0]))[0] ?></span>
-<span style="color: #8BBCCC ; margin-left: 1em" > <i class="fa-solid fa-2x fa-play" style="color: lightslategray; margin-right: 1em;"></i>  19 <img src="https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png" width="40px" /></span>
+<span style="color: #8BBCCC ; margin-left: 1em" > <i class="fa-solid fa-2x fa-play" style="color: lightslategray; margin-right: 1em;"></i>  <?= $data[6] ?> <img src="https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png" width="40px" /></span>
                 <h2 id="detail_define"><?=$data[1] ?> 
-                    <div style="display: inline-block" onclick="launch_toast()" class="checkbox-wrapper-26">
-                        <input type="checkbox" id="_checkbox-26">
+                
+                    <div style="display: inline-block" onclick="launch_toast(<?= $is_save ? '1' : '0' ?>)" class="checkbox-wrapper-26">
+                        <input type="checkbox" <?= $is_save ? 'checked disabled' : '' ?> id="_checkbox-26">
                         <label for="_checkbox-26">
                           <div class="tick_mark"></div>
                         </label>
@@ -88,16 +114,33 @@ $data =  getOneData('vocabulary','id_voca',$_GET['w'])[0];
                     </ul>
                 </div>
        <script>
-        function launch_toast() {
-    var x = document.getElementById("toast")
-    x.className = "show";
-    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+        function launch_toast(check) {
+            var x = document.getElementById("toast")
+            x.className = "show";
+            if(check == 1 && '<?= $is_premium == '0' ? 'true' : ''?>') {
+document.getElementById('desc').innerText = "Yêu cầu premium để xoá"
+document.getElementById('img').style.color = "#fed049"
+document.getElementById('toast').style.background = '#fed049'
+}
+else {
+ setTimeout(() => {
+     location.href = '<?= $_SERVER['PHP_SELF'] ?>?w=<?= $_GET['w'] ?>&add=1'
+ }, 2000);   
+}
+setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+
 }
 var ol = document.getElementsByTagName('ol')[0]
 for (let i = 0; i < ol.children.length; i++) {
     ol.children[i].innerHTML = ol.children[i].innerHTML.replace('<?= $data[1] ?>'.toLowerCase(),'<span style="text-transform: lowercase"><?= $data[1] ?></span>').replace('<?= $data[1] ?>','<span><?= $data[1] ?></span>')
 }
+
       </script>
+      <?php 
+                if(!isset($_COOKIE['username']) ) {
+                    echo '<script>document.getElementsByClassName(`checkbox-wrapper-26`)[0].style.display = "none"</script>';
+                }
+                ?>
     
 </body>
 </html>

@@ -2,12 +2,13 @@
 <div id="toast"><div id="img">IGT</div><div id="desc">Thêm thành công</div></div>
 
 <?php
-session_start();
 require_once('../../global.php');
+require_once('../../config/config.php');
 if(isset($_COOKIE['account']) && !isset($_SESSION['logged'])) {
     echo '<script>launch_toast("Đăng nhập thành công","rgb(44, 188, 99)")</script>';
     $_SESSION['logged'] = '1';
 }
+
 ?>
 
 <style>
@@ -18,12 +19,14 @@ if(isset($_COOKIE['account']) && !isset($_SESSION['logged'])) {
     }
     
 </style>
-     <!-- Vip icon -->
-        <!-- <img src="https://cdn.dribbble.com/users/1194206/screenshots/12028922/media/144a31183a201089c07141d49e7ccf40.gif" id="banner"> -->
+        
 <div id="content">
         
     <?php
-    if(isset($_COOKIE['account'])) {
+    if($is_premium == 1) {
+        echo '';
+    }
+     else if(isset($_COOKIE['account'])) {
         echo '<div id="slideshow">
         <img src="https://cdn.dribbble.com/users/1322388/screenshots/7901618/media/c1a7ce419922d38ce18f90d4daac9c47.jpg?compress=1&resize=1200x900&vertical=top" id="banner" width="90%" style="box-shadow: initial">
 
@@ -33,7 +36,7 @@ if(isset($_COOKIE['account']) && !isset($_SESSION['logged'])) {
 <div id="login_require"><h2>Tham gia ranking để nhận free <span style="color: #FED049">Premium User</span></h2><br>
         <a href="#"><button class="btn5-hover btn5"  style="background-image: initial;
         background-color: #FED049;
-    box-shadow: 0 4px 15px 0 #FED049;">Tham gia</Button></a>';
+    box-shadow: 0 4px 15px 0 #FED049;" onclick="location.href =`../ranking/index.php`">Tham gia</Button></a>';
     }
     else {
         echo ' <div id="slideshow">
@@ -42,9 +45,10 @@ if(isset($_COOKIE['account']) && !isset($_SESSION['logged'])) {
 <br>
 <br>
 <div id="login_require"><h2>Đăng nhập để khám phá nhiều tính năng</h2><br><a href="#"><button class="btn5-hover btn5" onclick="location.href = `'.  $home_path .'/site/form/login/index.php`">Đăng nhập</Button></a>';
+echo '<script>document.getElementById("vip").style.display = "none"</script>';
+
     }
     ?>
-    
       
 </div>
 <br>
@@ -52,7 +56,36 @@ if(isset($_COOKIE['account']) && !isset($_SESSION['logged'])) {
 
 <div id="content_words">
     <?php
-    $data = getAllData('vocabulary');
+        $data = '';
+        if(isset($_GET['cate'])) {
+        $data = getCustomData('SELECT * FROM vocabulary WHERE category_voca = "'. $_GET['cate'] .'"');
+    }
+    else if(isset($_GET['filter'])) {
+        switch($_GET['filter']) {
+            case '0' : {
+                $data = getCustomData('SELECT * FROM vocabulary ORDER BY name_voca');
+                break;
+            }   
+            case '1' : {
+                $data = getCustomData('SELECT * FROM vocabulary ORDER BY click_voca DESC');
+                break;
+            }   
+            case '2' : {
+                $data = getCustomData('SELECT voca_mg FROM vocabulary_manager WHERE customer_mg = "'.$_COOKIE['username'] . '"');
+                $in_data = '';
+                for ($i=0; $i < count($data); $i++) { 
+                    $in_data.= '"'.$data[$i][0]. '",';
+                }
+                $data = (getCustomData('SELECT * FROM vocabulary WHERE id_voca IN ('. rtrim($in_data,',')  .')'));
+                break;
+            }
+        }
+
+    }
+    else {
+
+        $data = getAllData('vocabulary');
+    }
     for ($i=0; $i < count($data); $i++) { 
         echo '<div onclick="detail(`'. $data[$i][0] .'`)" oncontextmenu="remove_item(this)"  class="word_item">
         <div>
@@ -87,6 +120,6 @@ if(isset($_COOKIE['account']) && !isset($_SESSION['logged'])) {
             }, 400);
         }
         function detail(obj) {
-            document.location.href = '../detail/index.php?w='+obj 
+            document.location.href = '../detail/index.php?w='+obj + '&view=1' 
         }       
     </script>

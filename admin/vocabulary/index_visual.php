@@ -78,6 +78,9 @@ $data = getCustomData('SELECT id_voca,name_voca,meaning_voca,category_voca,click
         text-align: center;
         font-size: 1.2em;
     }
+    #add {
+        position: fixed;
+    }
 
     #close {
         background-color: #E0144C;
@@ -233,7 +236,7 @@ $data = getCustomData('SELECT id_voca,name_voca,meaning_voca,category_voca,click
     }
     function selected(obj, o, index, field_2) {
 
-        document.getElementById('trash').style.top = window.event.clientY + 'px'
+        document.getElementById('trash').style.top = window.event.pageY + 'px'
         document.getElementById('trash').style.left = window.event.clientX + 'px'
         let tr = document.getElementsByTagName('tr')
         tr[o + 2].style.transitionDuration = '0.01s'

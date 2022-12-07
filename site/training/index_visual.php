@@ -138,7 +138,7 @@ if(isset($_GET['trained'])) {
                 let j = 0
                 for (let i = 0; i < 4; i++) {
                     if (i == rdd) {
-                        btn += '<button onclick="correct(this)">' + arr[count] + '</button>'
+                        btn += '<button onclick="correct(this)">' + meaning[count] + '</button>'
                     }
                     else {
                         btn += '<button onclick="incorrect(this)">' + rd[count][j] + '</button>'
@@ -192,7 +192,7 @@ if(isset($_GET['trained'])) {
 
     }
     function check_typing(obj) {
-        if (obj.value == arr[count]) {
+        if (obj.value == meaning[count]) {
             result.push(1)
             document.getElementsByClassName('question')[0].style.background = '#2cbc63'
             count++
@@ -201,6 +201,7 @@ if(isset($_GET['trained'])) {
                 document.getElementsByTagName('div')[5].innerHTML = getLayout(0)
             }, 1100);
         }
+        
     }
     function incorrect(obj) {
         result.push(0)
@@ -256,22 +257,28 @@ count_true++
 <?php
  $txt = '[';
  $rd = '[';
+ $meaning = '[';
  for ($i=0; $i < count($data); $i++) { 
-     $txt.= "'".  getCustomData('SELECT name_voca FROM vocabulary WHERE id_voca = "'. $data[$i][0]. '"')[0][0] ."',";
+    $t = getCustomData('SELECT name_voca,meaning_voca FROM vocabulary WHERE id_voca = "'. $data[$i][0]. '"')[0];
+     $txt.= "'".  $t[0] ."',";
+     $meaning.= "'".$t[1] ."',";
  }
+
  for ($i=0; $i < count($data); $i++) { 
     $rd.= '[';
     for($j = 0 ; $j < 3 ; $j++) {
         $sds = rand(1,getCustomData('SELECT COUNT(id_voca) FROM vocabulary')[0][0]-1);
-        $ss = getCustomData('SELECT name_voca FROM vocabulary LIMIT '. $sds-1 . ','. $sds)[0][0];
+        $ss = getCustomData('SELECT meaning_voca FROM vocabulary LIMIT '. $sds-1 . ','. $sds)[0][0];
         $rd.= "'". $ss ."',";
     } 
     $rd.= '],';
     }
  $txt.= ']';
+ $meaning.= ']';
  $rd .= ']';
      echo '<script>
      var arr = '. $txt .';
      var rd = '. $rd .';
+     var meaning = '. $meaning .';
      </script>';
 ?>

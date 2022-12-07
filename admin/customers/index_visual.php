@@ -255,7 +255,7 @@ top: -100px;
     }
     function selected(obj, o,index, field_2) {
         
-        document.getElementById('trash').style.top =  window.event.clientY + 'px'
+        document.getElementById('trash').style.top =  window.event.pageY + 'px'
         document.getElementById('trash').style.left =  window.event.clientX + 'px'
         let tr  = document.getElementsByTagName('tr')
         tr[o+2].style.transitionDuration = '0.01s'

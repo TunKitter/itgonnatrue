@@ -1,3 +1,18 @@
+<?php
+ob_start();
+require_once('../../config/config.php');
+$top10 = getCustomData('SELECT id_voca,name_voca FROM vocabulary ORDER BY click_voca DESC LIMIT 10');
+session_start();
+$is_premium = false;
+if(isset($_COOKIE['username'] )) {
+    $is_premium  = getOneData('customers','username_customer',$_COOKIE['username'])[0][5];
+}
+if(isset($_GET['view']))
+ {
+    header('location: '. $_SERVER['PHP_SELF']. '?w='.$_GET['w']);
+ }
+?>
+
 <!DOCTYPE html>
 <html lang="vn">
 <head>
@@ -29,7 +44,13 @@
             <i class="fa-solid fa-magnifying-glass" style="font-size: 1.4em; color:var(--primary-color)"></i>
         </div>
         <div id="action">
-            <button style="visibility: <?= isset($_COOKIE['account'] ) ? 'visible' : 'hidden' ?>" onclick="location.href = '../storage/index.php'">Kho từ vựng <sup style="background-color: #4481eb; color: white; padding: 4px; border-radius: 10% ">1</sup> </button>
+            <button style="visibility: <?= isset($_COOKIE['account'] ) ? 'visible' : 'hidden' ?>" onclick="location.href = '../storage/index.php'">Kho từ vựng </button>
+            <?php
+            if($is_premium) {
+                echo '<img src="https://cdn.dribbble.com/users/1194206/screenshots/12028922/media/144a31183a201089c07141d49e7ccf40.gif" id="vip" width="100px" style="box-shadow: none">';
+            }
+            ?>
+            
             <?php
 require_once('../../config/config.php');    
 
@@ -57,33 +78,31 @@ require_once('../../config/config.php');
             <ul style="cursor: pointer">
                 <li id="list">Danh mục
                     <ul id="list_item">
-                        <li># Food</li>
-                        <li># Verb</li>
-                        <li># Technology</li>
-                        <li># Ocean</li>
+                        <?php
+                        $cate = getCustomData('SELECT id_category,name_category FROM category INNER JOIN vocabulary ON id_category = category_voca GROUP BY id_category ORDER BY COUNT(id_category) DESC LIMIT 5');
+                        for ($i=0; $i < count($cate); $i++) { 
+                            echo '<li onclick="location.href = `'. $_SERVER['PHP_SELF'] .'?cate='. $cate[$i][0].'`">'.  $cate[$i][1] .'</li>';
+                        }
+                        ?>
                     </ul>
                 </li>
                 <li id="list">Sắp xếp theo
                     <ul id="list_item">
-                        <li># Mới nhất</li>
-                        <li># Lưu nhiều nhất</li>
-                        <li># Xem gần đây</li>
+                        <li onclick="location.href = `index.php?filter=0`"># A - Z</li>
+                        <li onclick="location.href = `index.php?filter=1`"># Xem nhiều nhất</li>
+                        <li onclick="location.href = `index.php?filter=2`"># Đã lưu</li>
                     </ul>
                 </li>
             </ul>
             <div style="position: relative">
                <div id="top10" style="opacity: 1">
-                    <ul>
-                        <li>Hello</li>
-                        <li>Abstract</li>
-                        <li>Trial</li>
-                        <li>Hacker</li>
-                        <li>Something</li>
-                        <li>Angular</li>
-                        <li>Headshort</li>
-                        <li>Training</li>
-                        <li>Guitar</li>
-                        <li>Name</li>
+                    <ul style="color:gray">
+                    <?php
+                        
+                        for ($i=0; $i < count($top10); $i++) { 
+                            echo '<li onclick="location.href = `../detail/index.php?w='. $top10[$i][0] .'`">'.  $top10[$i][1] .'</li>';
+                        }
+                        ?>
                     </ul>
                 </div>
             </div>
@@ -112,3 +131,6 @@ require_once('../../config/config.php');
         }
  
 </script>
+<?php
+ob_end_flush();
+?>
