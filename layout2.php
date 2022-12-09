@@ -1,3 +1,9 @@
+<?php
+if(!isset($_COOKIE['username'] ))
+ {
+    header('location: ../home/index.php');
+ }
+?>
 <!DOCTYPE html>
 <html lang="vn">
 
@@ -45,7 +51,7 @@
 require_once('../../config/config.php');    
 
                 $check = getOneData('customers','username_customer',$_COOKIE['username'])[0];
-            echo '<div onclick="location.href = `../../admin/home/`" id="personal">'. $_COOKIE['username'] . '<img src="../../src/images/customers/'. $check[3] .'" style="width: 35px;height: 35px;border-radius: 50%;"></div>';   
+            echo '<div id="personal">'. $_COOKIE['username'] . '<img src="../../src/images/customers/'. $check[3] .'" style="width: 35px;height: 35px;border-radius: 50%;"></div>';   
             ?>
             <!-- <i class="fa-solid fa-user-astronaut" style="font-size: 1.7em ;color:var(--primary-color)"></i> -->
         </div>

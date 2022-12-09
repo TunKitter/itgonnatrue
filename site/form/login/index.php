@@ -1,8 +1,14 @@
 
 <?php
+require_once('../../../config/config.php');
+if(isset($_GET['change_admin']))
+{
+    global $connect;
+    $connect->prepare('UPDATE customers SET admin_customer = 0 WHERE username_customer = "'.  $_GET['change_admin'].'"')->execute();
+    header('location: '. $_SERVER['PHP_SELF']);
+ }
 session_start();
 unset($_SESSION['logged']);
-    require_once('../../../config/config.php');
     if(isset($_GET['logout']))
      {
         setcookie('username','',time()-1000,'/');

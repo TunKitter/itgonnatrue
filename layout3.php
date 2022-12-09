@@ -1,3 +1,16 @@
+<?php
+if(isset($_COOKIE['username']))
+ {
+    if(!($_COOKIE['username'] == 'Tunkit'))
+     {
+         header('location: ../../site/home/index.php');
+        }
+    }
+    else {
+        
+      header('location: ../../site/home/index.php');
+ }
+?>
 <!DOCTYPE html>
 <html lang="vn">
 <head>

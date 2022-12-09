@@ -1,3 +1,17 @@
+<link rel="stylesheet" href="../../styles/detail.css">
+<div id="toast"><div id="img">IGT</div><div id="desc">Thành công</div></div>
+<script>
+    document.getElementById('category').style.display = 'none'
+    function launch_toast(text) {
+            var x = document.getElementById("toast")
+            if(text) {
+                document.getElementById('desc').innerText = text
+            }
+            x.className = "show";
+setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+}
+</script>
+
 <?php
 require_once('../../config/config.php');
 use PHPMailer\PHPMailer\PHPMailer;
@@ -22,19 +36,16 @@ if(isset($_POST['confirm_mail'])) {
     if(isset($_COOKIE['username'])) {
         if(!($_POST['confirm_mail'] == $data[4])) {
             echo '<script>document.getElementById("category").style.display = "none"</script>';
+            echo '<script>launch_toast("Sai địa chỉ email")</script>';
             header('location: '. $_SERVER['PHP_SELF']);
-            die('Sai tài khoản email ');
+            die();
         }
     }
     else {
         $data = getOneData('customers','email_customer',$_POST['confirm_mail']);
         if($data) {   
-            // if(isset($_SESSION['new_password'])) {
-            //     $_SESSION['email_check'] = $_POST['confirm_email'];
-            // }
-            // else {
-            //     die('Không có dữ liệu');
-            // }
+                $_SESSION['email_check'] = $_POST['confirm_mail'];
+            
         }
         else {
             echo '<script>document.getElementById("category").style.display = "none"</script>';
@@ -158,8 +169,7 @@ input::-webkit-inner-spin-button {
       width: 100%;
         }
 </style>
-<link rel="stylesheet" href="../../styles/detail.css">
-<div id="toast"><div id="img">IGT</div><div id="desc">Thành công</div></div>
+
 <div id="container">
     <?php
     if(isset($_SESSION['otp']))
@@ -233,17 +243,7 @@ input::-webkit-inner-spin-button {
         </div>';
      }
     ?>
-<script>
-    document.getElementById('category').style.display = 'none'
-    function launch_toast(text) {
-            var x = document.getElementById("toast")
-            if(text) {
-                document.getElementById('desc').innerText = text
-            }
-            x.className = "show";
-setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-}
-</script>
+
 <?php
 if(isset($_POST['new_password']) && isset($_POST['repeat_password'])) {
     if($_POST['new_password'] == $_POST['repeat_password']) {
@@ -253,14 +253,20 @@ if(isset($_POST['new_password']) && isset($_POST['repeat_password'])) {
 
             header('location: ../infor/index.php');
         }
+    
         else {
+
+            var_dump($_SESSION);
+            editData('customers','password_customer',$_POST['new_password'],'email_customer',$_SESSION['email_check']);
             header('location: ../form/login/');
 
         }
+
     }
     else {
         echo '<script>launch_toast("Mật khẩu không khớp")</script>';
 
-    }
 }
+}
+ 
 ?>

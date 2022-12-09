@@ -1,6 +1,5 @@
 <?php
 $home_path = '../..';
-
 ?>
 <script>
 function launch_toast(text,bg=null) {

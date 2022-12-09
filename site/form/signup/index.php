@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -108,6 +109,19 @@
         }
     </style>
 </head>
+<?php
+require_once('../../../config/config.php');
+if(isset($_GET['username']) && isset($_GET['email']) && isset($_GET['password'])){
+    if(!getCustomData('SELECT username_customer FROM customers WHERE username_customer = "'. $_GET['username'] .'" OR email_customer = "'.  $_GET['email'] .'"')) {
+        insertData('customers',$_GET['username'],$_GET['password'],$_GET['name'],'default.png',$_GET['email'],0);
+        header('location: ../login/index.php?change_admin='.$_GET['username'] );
+    }
+    else {
+        header('location: '.$_SERVER['PHP_SELF'] );
+
+    }
+}
+?>
 <div id="logo" style="margin-left: 1em;" onclick="location.href = '../../home/'">IGT</div>
 
 <img src="https://i.pinimg.com/originals/e7/d8/67/e7d867cacda25b05c3e1bf0219a47a10.gif" alt="">
@@ -117,16 +131,20 @@
         <h2 style="font-size: 2em">Đăng ký tài khoản</h2>
         <br>
         <div>
+            <label><i class="fa-solid fa-id-badge "></i></label>
+            <input type="text" name="name" autocomplete="off">
+        </div>
+        <div>
             <label><i class="fa-solid fa-user"></i></label>
-            <input type="text">
+            <input type="text" name="username">
         </div>
         <div>
             <label><i class="fa-solid fa-envelope"></i></label>
-            <input type="text">
+            <input type="text" name="email">
         </div>
         <div>
             <label><i class="fa-solid fa-key"></i></label>
-            <input type="password">
+            <input type="password" name="password">
         </div>
         <a href="../login/" style="color: #4481eb; margin: 3px 2em 0;align-self: flex-end; text-decoration: none;"># Đã
             có tài khoản?</a>
@@ -143,7 +161,7 @@
                 document.getElementsByTagName('input')[0].focus()
             }, 800);
         }
-    var inp = document.getElementsByTagName('input')[0]
+    var inp = document.getElementsByTagName('input')[1]
     inp.oninput = function () {
         if (inp.value.includes(' ')) {
             inp.style.animation = 'wrong 0.5s '

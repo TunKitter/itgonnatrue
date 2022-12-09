@@ -1,4 +1,9 @@
 <?php
+if(!isset($_COOKIE['username'] ))
+ {
+    header('location: ../home/index.php');
+ }
+
 require_once('../../global.php');
 require_once('../../config/config.php');
 $title = 'It\'s gonna true';

@@ -5,7 +5,7 @@
 </style>
 <?php
 require_once('../../config/config.php');
-$data = getCustomData('SELECT voca_mg,level_mg FROM vocabulary_manager WHERE customer_mg = "'. unserialize( base64_decode( $_COOKIE['account']))[0] .'"');
+$data = getCustomData('SELECT voca_mg,level_mg FROM vocabulary_manager WHERE customer_mg = "'. $_COOKIE['username']  .'"');
 $words = array(array(),array(),array(),array(),array(),array());
 for ($i=0; $i < count($data); $i++) { 
     $words[$data[$i][1]][count($words[$data[$i][1]])] = $data[$i][0];

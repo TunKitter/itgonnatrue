@@ -5,7 +5,14 @@ $data = getOneData('customers','username_customer',$_COOKIE['username'] )[0];
 if( isset($_POST['mail']) || isset($_FILES['img']))
  {
     if(isset($_FILES['img']['tmp_name'])) {
-        move_uploaded_file($_FILES['img']['tmp_name'],'../../src/images/customers/'. getOneData('customers','username_customer',$_COOKIE['username'] )[0][3]);
+        if($data[3] != 'default.png') {
+            move_uploaded_file($_FILES['img']['tmp_name'],'../../src/images/customers/'. getOneData('customers','username_customer',$_COOKIE['username'] )[0][3]);
+        }
+        else {
+            editData('customers','image_customer',$_COOKIE['username'] . explode('/',$_FILES['img']['type'])[1],'username_customer',$_COOKIE['username']);
+            move_uploaded_file($_FILES['img']['tmp_name'],'../../src/images/customers/'. $_COOKIE['username'] . explode('/',$_FILES['img']['type'])[1]);
+
+        }
     }
     editData('customers','email_customer',$_POST['mail'],'username_customer',$_COOKIE['username'] );
     header('location:'. $_SERVER['PHP_SELF']);

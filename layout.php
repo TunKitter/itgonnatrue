@@ -59,19 +59,48 @@ if(isset($_GET['view']))
         #personal:hover #more {
             display: flex;
         }
+        #search ul {
+            position: absolute;
+            list-style: none;
+            top: 3em;
+            display: flex;
+            /* flex-direction: column; */
+            gap: 4em;
+            background: transparent;
+            width: 100%;
+            z-index: 4;
+        }
+        #search ul li {
+            background: white;
+            box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+            width: 400px;
+            padding: 10px;
+            border-radius: 12px;
+            display: flex;
+            font-weight: bold;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #search ul li:hover  {
+            color: #4481eb;
+        }
+        
     </style>
     <title><?= $title ?></title>
 </head>
 
 <body>
-    
     <nav>
         <div id="logo" onclick="location.href ='../home/index.php'">IGT</div>
-        <div id="search"><input placeholder="" type="text" spellcheck="false">
+        <div id="search" style="position: relative;"><input id="search_input" placeholder="" type="text" spellcheck="false">
+        <ul id="suggest">
+        </ul>
             <i class="fa-solid fa-magnifying-glass" style="font-size: 1.4em; color:var(--primary-color)"></i>
+            
         </div>
         <div id="action">
-            <button style="visibility: <?= isset($_COOKIE['account'] ) ? 'visible' : 'hidden' ?>" onclick="location.href = '../storage/index.php'">Kho từ vựng </button>
+            <button style="visibility: <?= isset($_COOKIE['username'] ) ? 'visible' : 'hidden' ?>" onclick="location.href = '../storage/index.php'">Kho từ vựng </button>
             <?php
             if($is_premium) {
                 echo '<img src="https://cdn.dribbble.com/users/1194206/screenshots/12028922/media/144a31183a201089c07141d49e7ccf40.gif" id="vip" width="100px" style="box-shadow: none">';
@@ -118,7 +147,12 @@ require_once('../../config/config.php');
                     <ul id="list_item">
                         <li onclick="location.href = `index.php?filter=0`"># A - Z</li>
                         <li onclick="location.href = `index.php?filter=1`"># Xem nhiều nhất</li>
-                        <li onclick="location.href = `index.php?filter=2`"># Đã lưu</li>
+                        <?php
+                        if(isset($_COOKIE['username'] )) {
+                            echo '<li onclick="location.href = `index.php?filter=2`"># Đã lưu</li>';
+                        }
+                        ?>
+                        
                     </ul>
                 </li>
             </ul>
@@ -165,7 +199,17 @@ require_once('../../config/config.php');
         location.href = '../form/login/index.php?logout=1'
        }
  }
- 
+ document.getElementById('search_input').oninput  =function() {
+
+     let rq = new XMLHttpRequest()
+     rq.onreadystatechange = function() {
+         if(this.readyState == 4 && this.status ==200) {
+            document.getElementById('suggest').innerHTML = this.responseText
+            }
+        }
+        rq.open('GET','ajax_search.php?s=' + document.getElementById('search_input').value )
+        rq.send()
+    }
 </script>
 <?php
 ob_end_flush();
