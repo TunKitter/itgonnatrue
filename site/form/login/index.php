@@ -3,6 +3,12 @@
 session_start();
 unset($_SESSION['logged']);
     require_once('../../../config/config.php');
+    if(isset($_GET['logout']))
+     {
+        setcookie('username','',time()-1000,'/');
+        setcookie('account','',time()-1000,'/');
+        header('location: '. $_SERVER['PHP_SELF']);
+     }
 if(isset($_GET['username']) && isset($_GET['password'])) {
     $data =  getOneData('customers','username_customer',$_GET['username']);
 }
@@ -127,7 +133,7 @@ else if(isset($_GET['account'])){
         <label><i class="fa-solid fa-key"></i></label>
                 <input type="password" tabindex="2"  name="password">
             </div>
-            <a href="#" style="color: #4481eb; margin: 3px 2em 0;align-self: flex-end; text-decoration: none;"># Quên mật khẩu</a>
+            <a href="../../password_recovery/index.php" style="color: #4481eb; margin: 3px 2em 0;align-self: flex-end; text-decoration: none;"># Quên mật khẩu</a>
             <button class="btn5 btn5-hover" onclick="check_login()">Đăng nhập</button>
             
             <a href="../signup/"  style="color: lightslategray; margin: 3px 2em 0; text-decoration: none;">Chưa có tài khoản?</a>

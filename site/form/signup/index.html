@@ -135,7 +135,6 @@
     </form>
 </center>
 <script>
-    if (Math.random() > 0.5) {
         document.getElementsByTagName('form')[0].style.opacity = 0
         document.getElementsByTagName('img')[0].classList = 'animation'
         document.body.onload = function () {
@@ -144,7 +143,6 @@
                 document.getElementsByTagName('input')[0].focus()
             }, 800);
         }
-    }
     var inp = document.getElementsByTagName('input')[0]
     inp.oninput = function () {
         if (inp.value.includes(' ')) {

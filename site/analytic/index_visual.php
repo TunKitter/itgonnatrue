@@ -1,7 +1,14 @@
 <?php
 require_once('../../config/config.php');
-$learned = getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHERE level_mg = 5 AND customer_mg =  "'.  $_COOKIE['username']  .'"')[0][0];
+$learned = getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHERE level_mg = 5 AND customer_mg =  "'.  $_COOKIE['username']  .'"')[0][0] ;
 $all_learned = getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHERE customer_mg =  "'.  $_COOKIE['username']  .'"')[0][0];
+$week_word = getCustomData('SELECT week_mg,COUNT(voca_mg) FROM vocabulary_manager WHERE customer_mg = "'. $_COOKIE['username'] .'" GROUP BY week_mg ORDER BY week_mg');
+
+$week_count  = array(0,0,0,0,0,0,0);
+for ($i=0; $i < count($week_word); $i++) { 
+    $week_count[$week_word[$i][0]] = $week_word[$i][1];
+
+}
 ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -18,8 +25,8 @@ $all_learned = getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHER
             <canvas id="myChart" style="width:100%"></canvas>
 
             <script>
-                var xValues = [0, 1, 2, 3, 4, 5, 6, 7];
-                var yValues = [0, 8, 15, 20, 10, 2, 50];
+                var xValues = [1, 2, 3, 4, 5, 6, 7];
+                var yValues = [ <?= $week_count[0] ?>, <?= $week_count[1] ?>, <?= $week_count[2] ?>, <?= $week_count[3] ?>, <?= $week_count[4] ?>, <?= $week_count[5] ?>, <?= $week_count[6] ?>];
 
                 new Chart("myChart", {
                     type: "line",
@@ -54,26 +61,27 @@ $all_learned = getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHER
             </script>
             <br><br><br><br>
             <ul id="recommend">
+                
                 <li>
 
-                    <h2>Có <span style="color: red">332</span> từ cần ôn lại </h2>
+                    <h2>Có <span style="color: red"><?= getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHERE customer_mg = "'. $_COOKIE['username']  .'" AND NOT level_mg = 5')[0][0] ?></span> từ cần ôn lại </h2>
                 </li>
                 <li>
 
-                    <h2>Theo tiến trình hiện tại thì bạn sẽ học được <span style="color: #4481eb">332</span> từ mỗi
+                    <h2>Theo tiến trình hiện tại thì bạn sẽ học được <span style="color: #4481eb"><?= $all_learned*30 ?></span> từ mỗi
                         tháng </h2>
                 </li>
                 <li>
-                    <h2>Sau <span style="color: #4481eb">1 năm</span> bạn sẽ có thể đạt được vốn từ vựng giao tiếp cơ bản</h2>
+                    <h2>Sau <span style="color: #4481eb"><?= $all_learned != 0 ? round(1000/($all_learned*30)) : '?' ?> tháng</span> bạn sẽ có thể đạt được vốn từ vựng giao tiếp cơ bản</h2>
                 </li>
 
                 <li>
-                    <h2>Bạn sẽ đạt được vốn từ vựng giao tiếp nâng cao sau <span style="color: #4481eb">3 năm</span></h2>
+                    <h2>Bạn sẽ đạt được vốn từ vựng giao tiếp nâng cao sau <span style="color: #4481eb"><?= $all_learned != 0 ? round(8000/($all_learned*30)) : '?'?> tháng</span></h2>
                 </li>
 
             </ul>
             <br><br><br>
-            <h2 style="font-size: 2em; background: #4481eb; color: white; padding: 10px; border-radius:12px;">Các từ hay sai</h2>
+            <h2 style="font-size: 2em; background: #4481eb; color: white; padding: 10px; border-radius:12px;">Các từ gần đây</h2>
             <div style="margin-left: -1em">
 
                 <div id="controls">
@@ -81,16 +89,19 @@ $all_learned = getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHER
                 <link rel="stylesheet" href="../styles/storage.css">
                 <div id="content">
                     <ul>
-                        <li>Hello</li>
-                        <li>Abstract</li>
-                        <li>Trial</li>
-                        <li>Hacker</li>
-                        <li>Something</li>
-                        <li>Angular</li>
-                        <li>Headshort</li>
-                        <li>Training</li>
-                        <li>Guitar</li>
-                        <li>Name</li>
+                        <?php 
+                        $cate = getCustomData('SELECT name_category,count(id_category) FROM category INNER JOIN vocabulary ON id_category = category_voca INNER JOIN vocabulary_manager ON id_voca = voca_mg WHERE customer_mg = "'. $_COOKIE['username']  .'" GROUP BY name_category ');
+                        $name_cate = '';
+                        $value_cate = '';
+                        for ($i=0; $i < count($cate); $i++) { 
+                            $name_cate.= '"'.$cate[$i][0]. '",';
+                            $value_cate.= '"'.$cate[$i][1]. '",';
+                        }
+                        $recent = getCustomData('SELECT name_voca FROM vocabulary INNER JOIN vocabulary_manager ON id_voca = voca_mg WHERE customer_mg = "'. $_COOKIE['username']  .'" ORDER BY level_mg LIMIT 10');
+                        for ($i=0; $i < count($recent); $i++) { 
+                            echo '<li>'. $recent[$i][0]  .'</li>';
+                        }
+                        ?>
                     </ul>
                 </div>
 
@@ -102,8 +113,8 @@ $all_learned = getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHER
             <canvas id="myChart2" style="width:100%"></canvas>
 
             <script>
-                var xValues = ['Red','Blue','Green','Yellow'];
-                var yValues = [3, 8, 15, 20];
+                var xValues = [ <?= $name_cate ?> ];
+                var yValues = [ <?= $value_cate ?> ];
 
                 new Chart("myChart2", {
                     type: "doughnut",

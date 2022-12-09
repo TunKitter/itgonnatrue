@@ -13,7 +13,39 @@ if(isset($_COOKIE['username'])) {
     if(isset($_GET['add']))
     {
         if(!$is_save ) {
-            insertData('vocabulary_manager',$_COOKIE['username'],$_GET['w'],0,'Nothing here' );
+            $week = '';
+            switch(date('l')) {
+                case 'Monday' : {
+                    $week = '1';
+                    break;
+                }
+                case 'Tuesday' : {
+                    $week = '2';
+                    break;
+                }
+                case 'Wednesday' : {
+                    $week = '3';
+                    break;
+                }
+                case 'Thursday' : {
+                    $week = '4';
+                    break;
+                }
+                case 'Friday' : {
+                    $week = '5';
+                    break;
+                }
+                case 'Saturday' : {
+                    $week = '6';
+                    break;
+                }
+                case 'Sunday' : {
+                    $week = '7';
+                    break;
+                }
+                }
+            
+            insertData('vocabulary_manager',$_COOKIE['username'],$_GET['w'],0,$week);
             header('location:' . $_SERVER['PHP_SELF'] . '?w='. $_GET['w']);
         }
         else {
@@ -25,7 +57,7 @@ if(isset($_COOKIE['username'])) {
             }
         }
  }
-    }
+}
 
 ?>
 <style>
@@ -42,7 +74,7 @@ if(isset($_COOKIE['username'])) {
         <div id="content">
         <div>
 <span>#<?=explode('_',($data[0]))[0] ?></span>
-<span style="color: #8BBCCC ; margin-left: 1em" > <i class="fa-solid fa-2x fa-play" style="color: lightslategray; margin-right: 1em;"></i>  <?= $data[6] ?> <img src="https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png" width="40px" /></span>
+<span style="color: #8BBCCC ; margin-left: 1em" > <i class="fa-solid fa-2x fa-play" style="color: lightslategray; margin-right: 1em;" onclick="pronoun()"></i>  <?= $data[6] ?> <img src="https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png" width="40px" /></span>
                 <h2 id="detail_define"><?=$data[1] ?> 
                 
                     <div style="display: inline-block" onclick="launch_toast(<?= $is_save ? '1' : '0' ?>)" class="checkbox-wrapper-26">
@@ -142,5 +174,11 @@ for (let i = 0; i < ol.children.length; i++) {
                 }
                 ?>
     
+    <script>
+        function pronoun() {
+            let intt = new SpeechSynthesisUtterance(document.getElementById('detail_define').innerText)
+        speechSynthesis.speak(intt)
+        }
+    </script>
 </body>
 </html>

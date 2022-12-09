@@ -81,7 +81,14 @@ if(isset($_GET['trained'])) {
         <h2>Bạn đang có <span style="color: #4481eb">
                 <?= count($data) ?>
             </span> từ cần ôn tập</h2>
-        <button class="btn5 btn5-hover" onclick="start_training()">Ôn tập</button>
+            <?php
+            if(count($data) != 0) {
+                echo '<button class="btn5 btn5-hover" onclick="start_training()">Ôn tập</button>';
+            }
+            else {
+                echo '<br>Hãy lưu từ để ôn tập';
+            }
+            ?>
     </div>
 
 
@@ -227,7 +234,8 @@ if(isset($_GET['trained'])) {
 count_true++
             }
         }
-        let cr = Math.ceil(100/result.length)*count_true
+        let cr = Math.ceil(100/result.length)*count_true 
+        cr = cr > 100 ? 100 : cr
         // alert(cr)    
         let aa = setInterval(() => {
             circle.style.background = 'conic-gradient(#4481eb ' + i + 'deg, white 0deg)'

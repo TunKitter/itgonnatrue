@@ -4,9 +4,12 @@
 <?php
 require_once('../../global.php');
 require_once('../../config/config.php');
+unset($_SESSION['new_password']);
+    unset($_SESSION['otp']);
 if(isset($_COOKIE['account']) && !isset($_SESSION['logged'])) {
     echo '<script>launch_toast("Đăng nhập thành công","rgb(44, 188, 99)")</script>';
     $_SESSION['logged'] = '1';
+    
 }
 
 ?>
@@ -54,7 +57,7 @@ echo '<script>document.getElementById("vip").style.display = "none"</script>';
 <br>
 <br>
 
-<div id="content_words">
+<div id="content_words"  style="transform: translateX(-70px);">
     <?php
         $data = '';
         if(isset($_GET['cate'])) {
@@ -110,6 +113,8 @@ echo '<script>document.getElementById("vip").style.display = "none"</script>';
         </div>
     </aside>
     <script>
+        
+       
         function remove_item(obj) {
             event.preventDefault()
             obj.style.background = '#019267'
@@ -122,4 +127,5 @@ echo '<script>document.getElementById("vip").style.display = "none"</script>';
         function detail(obj) {
             document.location.href = '../detail/index.php?w='+obj + '&view=1' 
         }       
+        
     </script>

@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <title><?= $title ?></title>
     <style> 
+    body {
+        overflow-x: hidden;
+    }
     #list:nth-child(<?= $index_list ?>) {
         border-left-color: #4481eb !important ; color: #4481eb;
     }
@@ -29,7 +32,7 @@
 <body>
 
     <nav>
-        <div id="logo" onclick="location.href = '../home/'">IGT</div>
+        <div id="logo" onclick="location.href = '../home/index.php'">IGT</div>
         <div id="search"><input type="text" placeholder="" spellcheck="false">
             <i class="fa-solid fa-magnifying-glass" style="font-size: 1.4em; color:var(--primary-color)"></i>
         </div>
