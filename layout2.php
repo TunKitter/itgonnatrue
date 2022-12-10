@@ -44,7 +44,7 @@ if(!isset($_COOKIE['username'] ))
         </div>
         <div id="action">
             
-        <img src="https://media.istockphoto.com/id/1357548429/vector/winner-medal-with-star-and-ribbon-3d-vector-icon-cartoon-minimal-style-premium-quality.jpg?s=612x612&w=0&k=20&c=hOII9S8YXRpnlGlEi7ig_Jnrctjk5FehXr99-F0w8dU=" id="banner" style="box-shadow: none" width="70px">
+        <img onclick="location.href = '../payment/payment.php'" src="https://media.istockphoto.com/id/1357548429/vector/winner-medal-with-star-and-ribbon-3d-vector-icon-cartoon-minimal-style-premium-quality.jpg?s=612x612&w=0&k=20&c=hOII9S8YXRpnlGlEi7ig_Jnrctjk5FehXr99-F0w8dU=" id="banner" style="box-shadow: none" width="70px">
             <!-- <button onclick="location.href = '../training/index.php'"
                 style="background: #FED049 ;border:none;color:white; border-radius: 4px">Premium</button> -->
             <?php

@@ -1,6 +1,18 @@
+<?php
+if(isset($_GET['premium'])) {
+    echo '<img src="https://cdn.dribbble.com/users/104921/screenshots/2853932/july_shot.gif" id="congra" />';
+}
+?>
 <style>
     body {
         overflow: auto !important;
+    }
+    #congra {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        z-index: 9;
     }
 </style>
 <?php
@@ -31,7 +43,7 @@ $index_count = 0;
                 <hr>
             </div>
             <div id="content">
-
+    
             </div>
 
         </div>
@@ -73,9 +85,17 @@ $index_count = 0;
                 }, 300);
             }
         }
+       setTimeout(() => {
+           document.getElementById('congra').style.opacity = '0'
+           document.getElementById('congra').style.transitionDuration = '0.5s'
+       }, 4000);
+       setTimeout(() => {
+           location.href = '<?= $_SERVER['PHP_SELF'] ?>'
+           document.getElementById('congra').style.display = 'none'
+       }, 4500);
        
-        
     </script>
+    
     <?php
     echo '<script>';
     for ($i = 0; $i < 6; $i++) {
