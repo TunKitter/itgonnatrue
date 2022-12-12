@@ -84,7 +84,7 @@
                             if ($_GET['vnp_ResponseCode'] == '00') {
                                 echo "<span style='color:blue'>GD Thanh cong</span>";
                                 require_once('../../config/config.php');
-                                insertData('feedback','purcharse_'. $_COOKIE['username'] ,$_COOKIE['username'] , $_GET['vnp_TxnRef'] , $_GET['vnp_OrderInfo'] .',bill_code: '. $_GET['vnp_TransactionNo'],'check@example.com' );
+                                insertData('feedback','purchase_'. $_COOKIE['username'] ,$_COOKIE['username'] , $_GET['vnp_TxnRef'] , $_GET['vnp_OrderInfo'] .',bill_code: '. $_GET['vnp_TransactionNo'],'check@example.com' );
                                 editData('customers','admin_customer','1','username_customer',$_COOKIE['username'] );
                                 header('location: ../storage/index.php?premium=1');
                             } else {

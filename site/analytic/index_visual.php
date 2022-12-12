@@ -1,12 +1,7 @@
 <?php
 require_once('../../config/config.php');
 date_default_timezone_set('Asia/Ho_Chi_Minh');
-$wk =  date('l');
-$hour =  date('H')+date('m');
-if($wk = 'Sunday' && $hour >= 23+59 ) {
-    global $connect;
-    $connect->prepare('UPDATE vocabulary_manager SET week_mg = -1 ');
-}
+
 $learned = getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHERE level_mg = 5 AND customer_mg =  "'.  $_COOKIE['username']  .'"')[0][0] ;
 $all_learned = getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHERE customer_mg =  "'.  $_COOKIE['username']  .'"')[0][0];
 $week_word = getCustomData('SELECT week_mg,COUNT(voca_mg) FROM vocabulary_manager WHERE customer_mg = "'. $_COOKIE['username'] .'" AND week_mg > 0 GROUP BY week_mg ORDER BY week_mg');
@@ -34,7 +29,6 @@ for ($i=0; $i < count($week_word); $i++) {
             <script>
                 var xValues = [1, 2, 3, 4, 5, 6, 7];
                 var yValues = [ <?= $week_count[0] ?>, <?= $week_count[1] ?>, <?= $week_count[2] ?>, <?= $week_count[3] ?>, <?= $week_count[4] ?>, <?= $week_count[5] ?>, <?= $week_count[6] ?>];
-
                 new Chart("myChart", {
                     type: "line",
                     data: {
@@ -161,5 +155,5 @@ for ($i=0; $i < count($week_word); $i++) {
 
             }, 60);
         }
-
     </script>
+    

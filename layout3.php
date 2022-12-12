@@ -52,6 +52,7 @@ if(isset($_COOKIE['username']))
                 <li id="list" onclick="location.href = '../vocabulary'">Tất cả từ</li>
                 <li id="list" onclick="location.href = '../customers'">Người dùng</li>
                 <li id="list" onclick="location.href = '../feedback'">Feedback</li>
+                <li id="list" onclick="location.href = '../bill'">Hoá đơn thanh toán</li>
                 <!-- <li id="list">Sắp xếp theo
                     <ul id="list_item">
                         <li># Mới nhất</li>

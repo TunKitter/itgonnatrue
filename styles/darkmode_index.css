@@ -1,0 +1,89 @@
+
+            body {
+                background: #282A3A;
+                /* color: white !important; */
+            }
+            #category ul li {
+                color: #F9F9F9;
+            }
+            .word_item {
+                background-color: transparent;
+                /* border: 1.7px solid #474E68; */
+                color: white;
+                box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+                
+            }
+            button {
+                background: transparent !important;
+                color: #F9F9F9;
+            }
+            #logo {
+                color: #F9F9F9  ;
+            }
+            #search {
+                background-color: white !important;
+            }
+            
+            /* DETAIL WORD */
+
+            #des_word li ,h2,#example li 
+            ,#content {
+                color: white !important;
+
+            }
+            #controls {
+                background-color: transparent;
+            }
+            /* STORAGE */
+             #control li {
+                color: white ;
+            }
+            #content {
+                color: lightslategray;
+            }
+            /* TRAINING */
+            /* Ranking */
+            .btn5-hover.btn5 {
+                background-image: linear-gradient(
+                    to right,
+                    #25aae1,
+                    #4481eb,
+                    #04befe,
+                    #3f86ed
+                  ) !important;
+                box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75) !important;
+            }
+            .answer button,.res_text,tbody tr td {
+                color: white;
+            }
+            .answer input  {
+                background: transparent;
+            }
+            ::placeholder {
+                color: rgba(255, 255, 255, 0.249);
+            }
+            /* Analytic */
+            #controls {
+                background: transparent !important;
+            }
+            /* Feedback */
+            h2 ~ input::placeholder,textarea[name=content]::placeholder {
+color: black;
+            }
+            /* Introduce */
+            p[style]
+             {
+              color : white  
+             }
+             /* Setting */
+#container label {
+    color: white;
+} 
+select[name=save_day] {
+    background: transparent;
+    color: white;
+}
+select[name=save_day] option {
+    background: #282A3A;
+}
+            

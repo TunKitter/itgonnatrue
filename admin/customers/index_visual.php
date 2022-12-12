@@ -122,6 +122,22 @@ top: -100px;
 .checked {
     background-color: #2cbc63;
 }
+.pwd_field {
+    position: relative;
+    color: white;
+}
+.pwd_field::before {
+    content: '';
+    width: 100%;
+    height: 10px;
+    position: absolute;
+    top: 30 ;
+    background-color: lightslategray;
+    border-radius: 12px;
+}
+.pwd_field:hover::before {
+    z-index: -3;
+}
 </style>
 <div id="toast"><div id="img">IGT</div><div id="desc">Xoá thành công</div></div>
 <button id="add"> <i class="fa-solid fa-plus"></i> </button>
@@ -136,7 +152,7 @@ top: -100px;
             <th>Tên</th>
             <th>Ảnh</th>
             <th>Email</th>
-            <th>Quản trị</th>
+            <th>Đã thanh toán</th>
         </tr>
     </thead>
     <tbody>
@@ -165,6 +181,9 @@ top: -100px;
                 for ($j=0; $j < 5; $j++) { 
                     if(    $j == 3) {
                     echo '<td onclick="change_img('. $i .')"> <input type="hidden" name="username_img" value="'. $data[$i][0] .'" /> <input type="file" style="display:none" class="img_input" name="img_change" onchange="confirm_img(`'. $data[$i][0] .'`,'. $i .')"/> <img src="../../src/images/customers/'. $data[$i][3] .'"/></td>';
+                    }
+                    else if($j == 1) {
+                        echo '<td class="pwd_field" onmousedown="multi_select(event)" onfocusout="confirm_edit(this,`'. $data[$i][0] .' `,'. $j . ')" ondblclick="selected_db(this)" onclick="selected(this,'. $i .','. $j .',`'. $column[$j] . '`)">'. $data[$i][$j]  .'</td>'   ;
                     }
                     else {
 

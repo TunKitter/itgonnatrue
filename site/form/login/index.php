@@ -12,7 +12,9 @@ unset($_SESSION['logged']);
     if(isset($_GET['logout']))
      {
         setcookie('username','',time()-1000,'/');
+        setcookie('sound','',time()-1000,'/');
         setcookie('account','',time()-1000,'/');
+        setcookie('expiration','',time()-1000,'/');
         header('location: '. $_SERVER['PHP_SELF']);
      }
 if(isset($_GET['username']) && isset($_GET['password'])) {
@@ -21,6 +23,8 @@ if(isset($_GET['username']) && isset($_GET['password'])) {
 else if(isset($_GET['account'])){
     setcookie('account', (($_GET['account'])),time() + 60*60*24*3,'/');
     setcookie('username', unserialize(base64_decode($_GET['account']))[0],time() + 60*60*24*3,'/');
+    setcookie('sound', '1',time() + 60*60*24*3,'/');
+    setcookie('expiration', '7',time() + 60*60*24*3,'/');
     header('location: ../../home/index.php');
     echo $_GET['account'];
 }

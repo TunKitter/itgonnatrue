@@ -10,7 +10,7 @@ elseif(isset($_GET['delete_datas'])) {
     header('location: '. $_SERVER['PHP_SELF']);
 }
 
-$data = getCustomData('SELECT * FROM feedback WHERE NOT id_feedback LIKE "purchase%"');
+$data = getCustomData('SELECT * FROM feedback WHERE id_feedback LIKE "purchase%"');
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -63,27 +63,10 @@ $data = getCustomData('SELECT * FROM feedback WHERE NOT id_feedback LIKE "purcha
     #trash:hover {
         filter: none;
     }
-#detail {
-    width: 280px;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-    border-radius: 12px;
-    position: absolute;
-    padding: 10px;
-    line-height: 28px;
-    background: white;
-    display: none;
-}
 </style>
-
 <div id="toast">
     <div id="img">IGT</div>
     <div id="desc">Xoá thành công</div>
-</div>
-<div id="detail">
-    <p>
-
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae, quod! Ea libero vitae distinctio laborum consequuntur placeat ipsam veniam quisquam quaerat consequatur, dolorum labore nam tempore neque! Fugiat, id sit.
-    </p>
 </div>
 <table>
     <thead>
@@ -213,18 +196,5 @@ result+= '"' + dom[Array.from(multi)[i]].firstChild.innerText + '",';
 
 }
 return result;
-}
-var content = document.querySelectorAll('tr td:nth-child(4)')
-var detail_content = document.getElementById('detail')
-for (let i = 0; i < content.length; i++) {
-    content[i].onmouseover = function() {
-        detail_content.children[0].innerHTML = content[i].innerHTML
-        detail_content.style.left = (window.event.pageX) + 14 + 'px' 
-        detail_content.style.top = (window.event.pageY) + 14 + 'px' 
-        detail_content.style.display = 'block'
-    }
-    content[i].onmouseout = function() {
-            detail_content.style.display = 'none'
-    }
 }
 </script>

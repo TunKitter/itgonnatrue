@@ -15,6 +15,7 @@ if( isset($_POST['mail']) || isset($_FILES['img']))
         }
     }
     editData('customers','email_customer',$_POST['mail'],'username_customer',$_COOKIE['username'] );
+    editData('customers','name_customer',$_POST['name'],'username_customer',$_COOKIE['username'] );
     header('location:'. $_SERVER['PHP_SELF']);
  }
 ?> 
@@ -103,8 +104,13 @@ if( isset($_POST['mail']) || isset($_FILES['img']))
     <br>
     <div>
             <form method="POST" enctype="multipart/form-data">
-            <label><i class="fa-solid fa-user"></i></label>
-            <input type="text" disabled style="box-shadow: none;background: none"  onchange="uploaded(this)" tabindex="1" value="<?= $data[0] ?>"  autocomplete="off">
+            <label><i class="fa-solid"></i></label>
+            <input type="text"  style="box-shadow: none;background: none;color: #FB2576;"  onchange="uploaded(this)" tabindex="1" value="#<?= $data[0] ?>"  autocomplete="off">
+        </div>
+        <br>
+        <div>
+        <label><i class="fa-solid fa-user"></i></label>
+            <input type="text" onchange="uploaded(this)" value="<?= $data[2] ?>" tabindex="2"  name="name">
         </div>
         <br>
         <div>

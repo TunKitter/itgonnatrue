@@ -98,8 +98,26 @@ if(isset($_GET['trained'])) {
 </aside>
 
 <script>
-    var audio = new Audio('<?= $home_path ?>/styles/audio/correct.mp3')
-    var wrong = new Audio('<?= $home_path ?>/styles/audio/wrong.mp3')
+    <?php
+    if(isset($_COOKIE['sound'])) {
+        if($_COOKIE['sound'] ==  '1') {
+            echo "
+            var audio = new Audio('" . $home_path ."/styles/audio/correct.mp3');
+            var wrong = new Audio('".$home_path ."/styles/audio/wrong.mp3');";
+        }
+        else {
+            echo "
+            var audio = new Audio('/styles/audio/correct.mp3');
+            var wrong = new Audio('/styles/audio/wrong.mp3');";
+        }
+    }
+    else {
+        echo "
+        var audio = new Audio('" . $home_path ."/styles/audio/correct.mp3');
+        var wrong = new Audio('".$home_path ."/styles/audio/wrong.mp3');";
+        
+    }
+    ?>
 
     if (Math.random() > 0.7) {
         i = 0

@@ -73,7 +73,7 @@ $index_count = 0;
         li = document.querySelectorAll('#control li')
         for (let i = 0; i < li.length; i++) {
             li[i].onclick = function () {
-                li[index].style.color = 'black'
+                li[index].style.color = '<?= $_COOKIE['dark'] == '"false"' ? 'black' : 'white'  ?>'
                 li[i].style.color = '#4481eb'
                 index = i
                 document.getElementsByTagName('hr')[0].style.left = ((3.5 + (17 * i) - ((i == 5 ? 3 : 0))).toString() + '%')
@@ -89,10 +89,13 @@ $index_count = 0;
            document.getElementById('congra').style.opacity = '0'
            document.getElementById('congra').style.transitionDuration = '0.5s'
        }, 4000);
-       setTimeout(() => {
-           location.href = '<?= $_SERVER['PHP_SELF'] ?>'
-           document.getElementById('congra').style.display = 'none'
-       }, 4500);
+       if(<?= isset($_GET['premium']) ? 1 : 0 ?>) {
+
+           setTimeout(() => {
+               location.href = '<?= $_SERVER['PHP_SELF'] ?>'
+               document.getElementById('congra').style.display = 'none'
+            }, 4500);
+        }
        
     </script>
     

@@ -1,4 +1,5 @@
 <?php
+
 if(isset($_GET['s']))
 {
     if($_GET['s'] != '') {

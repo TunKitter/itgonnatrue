@@ -127,6 +127,9 @@ aside {
 #category {
     height: max-content;
 }
+#category ul {
+    list-style: none;
+}
 #top10,#rank {
     width: 300px;
     position: absolute;

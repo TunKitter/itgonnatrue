@@ -1,7 +1,7 @@
 <?php
 if(isset($_GET['name']) && isset($_GET['email']) && isset($_GET['content']))
  {
-    insertData('feedback',md5(time()),$_COOKIE['username'] , $_GET['name'],$_GET['content'],$_GET['feedback']);
+    insertData('feedback',md5(time().$_COOKIE['username'] ),$_COOKIE['username'] , $_GET['name'],$_GET['content'],$_GET['email']);
     header('location:'. $_SERVER['PHP_SELF']);
  }
 ?>

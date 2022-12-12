@@ -20,7 +20,7 @@ if(isset($_COOKIE['account']) && !isset($_SESSION['logged'])) {
         width: 30px;
         transform: scale(2);
     }
-    
+  
 </style>
         
 <div id="content">
@@ -75,11 +75,17 @@ echo '<script>document.getElementById("vip").style.display = "none"</script>';
             }   
             case '2' : {
                 $data = getCustomData('SELECT voca_mg FROM vocabulary_manager WHERE customer_mg = "'.$_COOKIE['username'] . '"');
-                $in_data = '';
-                for ($i=0; $i < count($data); $i++) { 
-                    $in_data.= '"'.$data[$i][0]. '",';
+                if($data) {
+
+                    $in_data = '';
+                    for ($i=0; $i < count($data); $i++) { 
+                        $in_data.= '"'.$data[$i][0]. '",';
+                    }
+                    $data = (getCustomData('SELECT * FROM vocabulary WHERE id_voca IN ('. rtrim($in_data,',')  .')'));
                 }
-                $data = (getCustomData('SELECT * FROM vocabulary WHERE id_voca IN ('. rtrim($in_data,',')  .')'));
+                else {
+                    echo '<p style="text-align:center">Bạn chưa lưu từ nào</p>';
+                }
                 break;
             }
         }
@@ -127,5 +133,5 @@ echo '<script>document.getElementById("vip").style.display = "none"</script>';
         function detail(obj) {
             document.location.href = '../detail/index.php?w='+obj + '&view=1' 
         }       
-        
-    </script>
+       
+        </script>

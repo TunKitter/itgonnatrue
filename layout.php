@@ -3,6 +3,8 @@ ob_start();
 require_once('../../config/config.php');
 $top10 = getCustomData('SELECT id_voca,name_voca FROM vocabulary ORDER BY click_voca DESC LIMIT 10');
 session_start();
+$_COOKIE['dark'] = isset($_COOKIE['dark']) ? $_COOKIE['dark'] : '"demo"' ;
+
 $is_premium = false;
 if(isset($_COOKIE['username'] )) {
     $is_premium  = getOneData('customers','username_customer',$_COOKIE['username'])[0][5];
@@ -25,6 +27,7 @@ if(isset($_GET['view']))
         body {
             overflow-x: hidden;
         }
+        
         #personal {
             display: flex;
             align-items:center;
@@ -103,7 +106,8 @@ if(isset($_GET['view']))
             <button style="visibility: <?= isset($_COOKIE['username'] ) ? 'visible' : 'hidden' ?>" onclick="location.href = '../storage/index.php'">Kho từ vựng </button>
             <?php
             if($is_premium) {
-                echo '<img src="https://cdn.dribbble.com/users/1194206/screenshots/12028922/media/144a31183a201089c07141d49e7ccf40.gif" id="vip" width="100px" style="box-shadow: none">';
+                echo '<img src="../../src/vip.gif" id="vip" width="100px" style="box-shadow: none">';
+                echo '<img src="../../src/dark_mode.png" id="dark" width="70px" style="box-shadow: none">';
             }
             ?>
             
@@ -115,7 +119,7 @@ require_once('../../config/config.php');
 
                     echo '<div id="personal">'. $_COOKIE['username'] . '<img src="../../src/images/customers/'. $check[3] .'" style="width: 35px;height: 35px;border-radius: 50%;"> <ul id="more">
                         <li onclick="location.href = `../infor/index.php`"><i class="fa-solid fa-user"></i></li>
-                        <li><i class="fa-solid fa-bars"></i></li>
+                        <li onclick="location.href = `../setting/index.php`"><i class="fa-solid fa-bars"></i></li>
                         '. ($_COOKIE['username'] == 'Tunkit'  ? '<li onclick="location.href = `../../admin/home/`" ><i class="fa-solid fa-user-astronaut"></i></li>' : '') .
                         '<li onclick="log_out()"><i class="fa-solid fa-sign-out"></i></li>
                     </ul> </div>';
@@ -175,6 +179,30 @@ require_once('../../config/config.php');
         ?>
         </div>
 <script>
+
+var is_dark = <?=   ($_COOKIE['dark'])   ?>;
+        document.getElementById('dark').onclick  = function() {
+            if(is_dark == 'true') {
+                document.getElementById('dark').setAttribute('src', '../../src/night_mode.png')
+                document.getElementById('dark').setAttribute('width', '50px')
+                document.head.innerHTML+= '<link rel="stylesheet" href="../../styles/darkmode_index.css">'
+                document.cookie = 'dark="true";path=/'
+        is_dark = "false"  
+
+            } 
+            else {
+
+                document.getElementById('dark').setAttribute('src', '../../src/dark_mode.png')
+                document.getElementById('dark').setAttribute('width', '70px')
+           document.head.innerHTML = document.head.innerHTML.replace('<link rel="stylesheet" href="../../styles/darkmode_index.css">','')
+           document.cookie = 'dark="false";path=/'
+        is_dark = "true"
+ 
+
+        }
+            
+        }
+        document.getElementById('dark').click()
     document.getElementsByTagName('nav')[0].style.position = 'relative'
     document.getElementsByTagName('nav')[0].style.zIndex = 10
            rd = Math.random()
