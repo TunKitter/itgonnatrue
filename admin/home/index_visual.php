@@ -4,8 +4,15 @@ $top = getCustomData('SELECT voca_mg,COUNT(voca_mg) FROM vocabulary_manager GROU
 $click = getCustomData('SELECT name_voca,click_voca FROM vocabulary GROUP BY id_voca ORDER BY click_voca DESC LIMIT 10');
 $top_cate = getCustomData('SELECT name_category,sum(click_voca) FROM vocabulary INNER JOIN category ON id_category = category_voca GROUP BY category_voca ');
 $top_customer = getCustomData('SELECT customer_mg,COUNT(customer_mg) FROM vocabulary_manager GROUP BY customer_mg ORDER BY count(customer_mg) DESC LIMIT 1');
-echo '<pre>';
-echo '</pre>';
+$category = getCustomData('SELECT name_category,COUNT(id_voca) FROM category INNER JOIN vocabulary ON id_category = category_voca GROUP BY name_category');
+$cate_text = '[';
+$cate_number = '[';
+for ($i=0; $i < count($category); $i++) { 
+    $cate_text.= '"'. $category[$i][0] . '",';
+    $cate_number.= ''. $category[$i][1] . ',';
+}
+$cate_number .= ']';
+$cate_text .= ']' ;
 $count_word = array();
 $top_word_name = array();
 $top_click_name = array();
@@ -197,8 +204,7 @@ for ($i=0; $i < count($top); $i++) {
 
             </ul>
             <br><br><br>
-            <h2 style="font-size: 2em; background: #4481eb; color: white; padding: 10px; border-radius:12px;">Các từ đã
-                học gần đây</h2>
+            <h2 style="font-size: 2em; background: #4481eb; color: white; padding: 10px; border-radius:12px;">Các từ ít được tra cứu nhất</h2>
             <div style="margin-left: -1em">
 
                 <div id="controls">
@@ -206,16 +212,14 @@ for ($i=0; $i < count($top); $i++) {
                 <link rel="stylesheet" href="../styles/storage.css">
                 <div id="content">
                     <ul>
-                        <li>Hello</li>
-                        <li>Abstract</li>
-                        <li>Trial</li>
-                        <li>Hacker</li>
-                        <li>Something</li>
-                        <li>Angular</li>
-                        <li>Headshort</li>
-                        <li>Training</li>
-                        <li>Guitar</li>
-                        <li>Name</li>
+                        <?php 
+                    $bottom_ranking = getCustomData('SELECT name_voca FROM vocabulary ORDER BY click_voca LIMIT 10');
+
+                    for ($i=0; $i < count($bottom_ranking); $i++) { 
+                        echo '<li>'. $bottom_ranking[$i][0]  .'</li>';
+                    }
+
+                        ?>
                     </ul>
                 </div>
 
@@ -227,8 +231,8 @@ for ($i=0; $i < count($top); $i++) {
             <canvas id="myChart2" style="width:100%"></canvas>
 
             <script>
-                var xValues2 = ['Red','Blue','Green','Yellow'];
-                var yValues2 = [3, 8, 15, 20];
+                var xValues2 = <?= $cate_text ?>;
+                var yValues2 = <?= $cate_number ?>;
 
                 new Chart("myChart2", {
                     type: "doughnut",

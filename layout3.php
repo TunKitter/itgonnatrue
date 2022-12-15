@@ -40,7 +40,7 @@ if(isset($_COOKIE['username']))
         <div id="action">
             <!-- <button onclick="location.href = '../storage/index.php'">Đăng xuất<sup style="background-color: #4481eb; color: white; padding: 4px; border-radius: 10% ">1</sup> </button> -->
             <i class="fa-solid fa-user-astronaut" style="font-size: 1.7em ;color:var(--primary-color)"></i>
-            <button onclick="location.href = '../../admin/home/'">Cấu hình</button>
+            <button onclick="location.href = '../../site/home/index.php'">Trang khách hàng</button>
         </div>
     </nav>
     <aside>

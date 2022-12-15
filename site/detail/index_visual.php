@@ -44,9 +44,17 @@ if(isset($_COOKIE['username'])) {
                     break;
                 }
                 }
-            
-            insertData('vocabulary_manager',$_COOKIE['username'],$_GET['w'],0,$week);
-            header('location:' . $_SERVER['PHP_SELF'] . '?w='. $_GET['w']);
+                if(!$is_premium) {
+                    if(getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_manager WHERE customer_mg = "'. $_COOKIE['usernane'] .'"')[0][0] <= 20) {
+                        insertData('vocabulary_manager',$_COOKIE['username'],$_GET['w'],0,$week);
+                        header('location:' . $_SERVER['PHP_SELF'] . '?w='. $_GET['w']);
+                    }
+                }
+                else {
+                    insertData('vocabulary_manager',$_COOKIE['username'],$_GET['w'],0,$week);
+                    header('location:' . $_SERVER['PHP_SELF'] . '?w='. $_GET['w']);
+
+                }
         }
         else {
             if($is_premium) {
@@ -149,7 +157,7 @@ if(isset($_COOKIE['username'])) {
         function launch_toast(check) {
             var x = document.getElementById("toast")
             x.className = "show";
-            if(check == 1 && ('<?= $is_premium == '0' ? 'true' : ''?>' || <?= getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_mg WHERE customer_mg = "'. $_COOKIE['username']  .'"')[0][0] > 20 ?>)) {
+            if(check == 1 && '<?= $is_premium == '0' ? 'true' : ''?>') {
 document.getElementById('desc').innerText = "Yêu cầu premium để xoá"
 document.getElementById('img').style.color = "#fed049"
 document.getElementById('toast').style.background = '#fed049'

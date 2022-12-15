@@ -15,6 +15,7 @@ unset($_SESSION['logged']);
         setcookie('sound','',time()-1000,'/');
         setcookie('account','',time()-1000,'/');
         setcookie('expiration','',time()-1000,'/');
+        setcookie('dark','',time()-1000,'/');
         header('location: '. $_SERVER['PHP_SELF']);
      }
 if(isset($_GET['username']) && isset($_GET['password'])) {

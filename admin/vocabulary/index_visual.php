@@ -102,6 +102,7 @@ $data = getCustomData('SELECT id_voca,name_voca,meaning_voca,category_voca,click
         transition-duration: 0.01s;
         color: white;
     }
+    
 
     #trash {
         width: 30px;
@@ -123,7 +124,9 @@ $data = getCustomData('SELECT id_voca,name_voca,meaning_voca,category_voca,click
     a {
         color: #4481eb;
         text-decoration: none;
+        font-weight: normal;
     }
+    
 </style>
 <div id="toast">
     <div id="img">IGT</div>

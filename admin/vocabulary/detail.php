@@ -252,6 +252,59 @@ function getDataIndex(index) {
                                      ?>';
             break;
         }
+        case 3 : {
+            return `
+            <div id="content">
+            <ul>
+            <?php 
+                $customer =  getCustomData('SELECT customer_mg FROM vocabulary_manager WHERE voca_mg = "'. $_GET['v'] .'"');
+                for ($i=0; $i < count($customer); $i++) { 
+                    echo '<li style="width:100px">'. $customer[$i][0] . '</li>';
+                }
+            ?>
+            </ul>
+            </div>
+
+            
+            `
+            break;
+        }
+        case 4 : {
+            return `
+            <div id="content">
+            <ul>
+            <?php 
+            $same = explode('_',$_GET['v']);
+            $same = $same[count($same)-1];
+                $same_word = getCustomData('SELECT name_voca FROM vocabulary WHERE id_voca LIKE "%'. $same .'" AND NOT id_voca = "'. $_GET['v'] .'"');
+                for ($i=0; $i < count($same_word); $i++) { 
+                    echo '<li style="width:100px">'. $same_word[$i][0] . '</li>';
+                }
+            ?>
+            </ul>
+            </div>            
+            `
+            break;
+        }
+        
+        case 5 : {
+            return `
+            <div id="content">
+            <ul>
+            <?php 
+            $same = explode('_',$_GET['v']);
+            $same = $same[count($same)-1];
+                $same_word = getCustomData('SELECT name_voca,click_voca FROM vocabulary WHERE id_voca LIKE "%'. $same .'"    ORDER BY click_voca DESC');
+                for ($i=0; $i < count($same_word); $i++) { 
+                    echo '<li style="width:100px"> <span style="color: #4481eb; display:inline">'. $same_word[$i][1] .'</span> '. $same_word[$i][0] . ' </li>';
+                }
+            ?>
+            </ul>
+            </div>            
+            `
+            break;
+        }
+
     }
 }
 var is_usage = false
