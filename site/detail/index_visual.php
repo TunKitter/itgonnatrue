@@ -149,7 +149,7 @@ if(isset($_COOKIE['username'])) {
         function launch_toast(check) {
             var x = document.getElementById("toast")
             x.className = "show";
-            if(check == 1 && '<?= $is_premium == '0' ? 'true' : ''?>') {
+            if(check == 1 && ('<?= $is_premium == '0' ? 'true' : ''?>' || <?= getCustomData('SELECT COUNT(voca_mg) FROM vocabulary_mg WHERE customer_mg = "'. $_COOKIE['username']  .'"')[0][0] > 20 ?>)) {
 document.getElementById('desc').innerText = "Yêu cầu premium để xoá"
 document.getElementById('img').style.color = "#fed049"
 document.getElementById('toast').style.background = '#fed049'
