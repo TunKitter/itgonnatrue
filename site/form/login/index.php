@@ -9,6 +9,8 @@ if(isset($_GET['change_admin']))
  }
 session_start();
 unset($_SESSION['logged']);
+unset($_SESSION['new_password']);
+unset($_SESSION['otp']);
     if(isset($_GET['logout']))
      {
         setcookie('username','',time()-1000,'/');

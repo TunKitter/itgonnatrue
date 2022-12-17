@@ -111,14 +111,16 @@
 </head>
 <?php
 require_once('../../../config/config.php');
-if(isset($_GET['username']) && isset($_GET['email']) && isset($_GET['password'])){
+
+if(isset($_GET['username']) && isset($_GET['email']) && isset($_GET['password']) && 
+!empty($_GET['username']) && !empty($_GET['email']) && !empty($_GET['password'])
+){
     if(!getCustomData('SELECT username_customer FROM customers WHERE username_customer = "'. $_GET['username'] .'" OR email_customer = "'.  $_GET['email'] .'"')) {
         insertData('customers',$_GET['username'],$_GET['password'],$_GET['name'],'default.png',$_GET['email'],0);
         header('location: ../login/index.php?change_admin='.$_GET['username'] );
     }
     else {
-        header('location: '.$_SERVER['PHP_SELF'] );
-
+        header('location: '.$_SERVER['PHP_SELF'] . '?exist=1' );
     }
 }
 ?>
@@ -132,19 +134,19 @@ if(isset($_GET['username']) && isset($_GET['email']) && isset($_GET['password'])
         <br>
         <div>
             <label><i class="fa-solid fa-id-badge "></i></label>
-            <input type="text" name="name" autocomplete="off">
+            <input required type="text" name="name" autocomplete="off" style="text-transform: capitalize;">
         </div>
         <div>
             <label><i class="fa-solid fa-user"></i></label>
-            <input type="text" name="username">
+            <input required type="text" name="username">
         </div>
         <div>
             <label><i class="fa-solid fa-envelope"></i></label>
-            <input type="text" name="email">
+            <input required type="email" name="email">
         </div>
         <div>
             <label><i class="fa-solid fa-key"></i></label>
-            <input type="password" name="password">
+            <input required type="password" minlength="6"    name="password">
         </div>
         <a href="../login/" style="color: #4481eb; margin: 3px 2em 0;align-self: flex-end; text-decoration: none;"># Đã
             có tài khoản?</a>
@@ -165,12 +167,21 @@ if(isset($_GET['username']) && isset($_GET['email']) && isset($_GET['password'])
     inp.oninput = function () {
         if (inp.value.includes(' ')) {
             inp.style.animation = 'wrong 0.5s '
+            
         }
         setTimeout(() => {
             inp.style.animation = 'inherit'
         }, 700);
 
     }
+    inp.onchange = function() {
+        if(inp.value.includes(' '))
+         {
+
+             inp.value = ''
+            }
+            }
+    
 
 </script>
 </body>
